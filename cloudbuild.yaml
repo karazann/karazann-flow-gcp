@@ -9,7 +9,7 @@ steps:
 
     # Push Images
     - name: "gcr.io/cloud-builders/docker"
-      args: ["push", "gcr.io/${_IMAGE_NAME}:latest"]
+      args: ["push", "gcr.io/${PROJECT_ID}/${_IMAGE_NAME}:latest"]
 
     # Deploy to Cloud Run
     # Setup berglas secrets
