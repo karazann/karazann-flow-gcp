@@ -1,16 +1,12 @@
 import { Controller, Get, Post } from '@overnightjs/core'
 import { Request, Response } from 'express'
 
-@Controller('api/test')
+@Controller('flow/trigger')
 export default class UserController {
 
-    @Get()
-    private getAll(req: Request, res: Response): void {
-        res.status(200).json({ msg: 'get_all_called' })
-    }
-
     @Post()
-    private add(req: Request, res: Response): void {
+    private trigger(req: Request, res: Response): void {
+        console.log(req.body)
         res.status(200).json({ msg: 'add_called' })
     }
 }
