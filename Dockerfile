@@ -16,6 +16,7 @@ RUN apk --no-cache add ca-certificates
 WORKDIR /app
 ENV NODE_ENV=production
 
+COPY .npmrc ./
 COPY package*.json ./
 COPY --from=builder /app/dist/ dist/
 COPY --from=gcr.io/berglas/berglas:latest /bin/berglas /bin/berglas
