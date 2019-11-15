@@ -15,6 +15,7 @@ steps:
     # Setup berglas secrets
     - name: "gcr.io/cloud-builders/gcloud"
       args: [
+        'beta',
         'run',
         'deploy',
         '${_SERVICE_NAME}',
