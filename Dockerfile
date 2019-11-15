@@ -2,6 +2,7 @@
 FROM node:12-alpine AS builder
 WORKDIR /app
 
+COPY .npmrc ./
 COPY package*.json ./
 COPY tsconfig*.json ./
 COPY src ./src
