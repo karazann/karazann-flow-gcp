@@ -17,10 +17,9 @@ export class StorageService {
             console.log(buffers[0])
             return buffers[0]
         } catch (e) {
-            console.log(e)
             // Complete a structured log entry.
             const entry = log.entry(`Failed to load .env file from bucket: ${bucketName}`)
-            log.emergency(entry, () => {  })
+            log.critical(entry)
             return
         }
     }
