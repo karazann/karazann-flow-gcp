@@ -5,16 +5,13 @@ import { LoggingWinston } from '@google-cloud/logging-winston'
 const loggingWinston = new LoggingWinston({
     serviceContext: {
         service: 'karazann-flow-engine-production',
-        version: 'qa',
-    },
+        version: 'qa'
+    }
 })
 
 const { Console } = transports
 
 export const logger = createLogger({
     level: process.env.NODE_ENV === 'production' ? 'info' : 'debug',
-    transports: [
-        loggingWinston,
-        new Console()
-    ]
+    transports: [loggingWinston, new Console()]
 })

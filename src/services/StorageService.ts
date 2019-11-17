@@ -1,6 +1,7 @@
 import { Storage } from '@google-cloud/storage'
 import { Service } from 'typedi'
 import { FlowData } from '@szkabaroli/karazann-flow/lib/core/data'
+import { logger } from '../logger'
 
 @Service()
 export class StorageService {
@@ -36,11 +37,7 @@ export class StorageService {
             return JSON.parse(buffers[0].toString())
         } catch (e) {
             // Complete a structured log entry.
-            const entry = {
-                severity: 'ERROR',
-                message: `Failed to flow data request`
-            }
-            console.error(entry)
+            logger.error({ severity: "EMERGENCY", message: 'Failed to flow data request' })
             return null
         }
     }
