@@ -8,8 +8,8 @@ import { config, parse } from 'dotenv'
 import { logger } from './logger'
 
 logger.error('warp nacelles offline')
-logger.info('shields at 99%')
-logger.debug('developent debug', { prefix: 'some-module' })
+logger.info('shields at 99%', { prefix: 'some-module' })
+logger.debug('developent debug')
 
 /** Error Levels
  * DEFAULT  (0) The log entry has no assigned severity level.
