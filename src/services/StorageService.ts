@@ -17,17 +17,14 @@ export class StorageService {
             const buffers = await secretsFile.download()
             return buffers[0]
         } catch (e) {
-            logger.error({ severity: "CRITICAL", message: 'Failed to load .env from bucket: ${bucketName}' })
+            logger.error({ severity: "EMERGENCY", message: 'Failed to load .env from bucket: ${bucketName}' })
             return null
         }
     }
 
-    /**
-     * getFlowData
-     */
-    public async getFlowDataFromBucket(bucketName: string, flowId: string): Promise<FlowData | null> {
+    public async getFlowDataFromBucket(flowsBucketName: string, flowId: string): Promise<FlowData | null> {
         try {
-            const secretsFile = this.storage.bucket(bucketName).file('.env')
+            const secretsFile = this.storage.bucket(flowsBucketName).file('.env')
             const buffers = await secretsFile.download()
             console.log()
             return JSON.parse(buffers[0].toString())
