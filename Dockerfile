@@ -1,7 +1,6 @@
 # Builder stage
 FROM node:12-alpine AS builder
 WORKDIR /app
-ENV NODE_ENV=production
 
 COPY .npmrc ./
 COPY package*.json ./
@@ -9,6 +8,7 @@ COPY tsconfig*.json ./
 COPY src ./src
 
 RUN npm install
+ENV NODE_ENV=production
 RUN npm run build
 
 # Runtime stage (production part)
