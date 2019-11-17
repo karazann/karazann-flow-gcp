@@ -17,7 +17,7 @@ const gcpLogger = new LoggingWinston({
 
 const { Console } = transports
 
-const severityLevel = format(info => {
+const severityLevel = format((info, opts) => {
     info.severity = info.level.toUpperCase()
     delete info.level
     return info
