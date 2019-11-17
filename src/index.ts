@@ -17,10 +17,12 @@ const boot = async () => {
         config()
     } else {
         const dotenv = await storageService.getDotenv(process.env.SECRETS_BUCKET as string)
-        const env = parse(dotenv)
-        for (const k in env) {
-            if (env.hasOwnProperty(k)) {
-                process.env[k] = env[k]
+        if (dotenv) { 
+            const env = parse(dotenv)
+            for (const k in env) {
+                if (env.hasOwnProperty(k)) {
+                    process.env[k] = env[k]
+                }
             }
         }
     }
