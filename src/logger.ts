@@ -1,4 +1,15 @@
-import {Logging} from '@google-cloud/logging'
+import { createLogger, transports } from 'winston'
+import { LoggingWinston } from '@google-cloud/logging-winston'
 
-const logging = new Logging()
-export const log = logging.log('test')
+// Imports the Google Cloud client library for Winston
+const loggingWinston = new LoggingWinston()
+const { Console } = transports
+
+export const logger = createLogger({
+    level: process.env.NODE_ENV === 'production' ? 'info' : 'debug',
+    transports: [
+        new Console(),
+        // Add Stackdriver Logging
+        loggingWinston
+    ]
+})

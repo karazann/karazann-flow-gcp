@@ -1,4 +1,4 @@
-import { JsonController, Body, Post, OnUndefined } from 'routing-controllers'
+import { JsonController, Body, Get, OnUndefined } from 'routing-controllers'
 
 @JsonController()
 export class FlowWorkerController {
@@ -21,10 +21,9 @@ export class FlowWorkerController {
      *
      * @apiSuccess (Success 201) {String} message Task saved successfully!
      */
-    @Post('/work')
-    private trigger(@Body() body: Object): unknown {
+    @Get('/work')
+    private flowWorker(@Body() body: Object): Object {
         console.log(body)
-        return undefined
-        //return { msg: 'add_called' }
+        return { test: 123}
     }
 }

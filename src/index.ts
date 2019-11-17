@@ -5,6 +5,12 @@ import { FlowWorkerController, FlowEventsController } from './controllers'
 import { StorageService } from './services/StorageService'
 import { config, parse } from 'dotenv'
 
+import { logger } from './logger'
+
+logger.error('warp nacelles offline')
+logger.info('shields at 99%')
+logger.debug('developent debug')
+
 /** Error Levels
  * DEFAULT  (0) The log entry has no assigned severity level.
  * DEBUG    (100) Debug or trace information.
