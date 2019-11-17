@@ -35,6 +35,7 @@ const boot = async () => {
             }
         }
     }
+    console.log(process.env.DB_PASS)
 
     // Setup typedi dependency injection for controllers
     useContainer(Container)
