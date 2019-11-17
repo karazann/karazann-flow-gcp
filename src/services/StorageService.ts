@@ -16,6 +16,7 @@ export class StorageService {
             const buffers = await secretsFile.download()
             return buffers[0]
         } catch (e) {
+            console.log(e)
             // Complete a structured log entry.
             const entry = log.entry(`Failed to load .env file from bucket: ${bucketName}`)
             log.emergency(entry, () => {  })
