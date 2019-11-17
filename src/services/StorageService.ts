@@ -14,6 +14,7 @@ export class StorageService {
         try {
             const secretsFile = this.storage.bucket(bucketName).file('.env')
             const buffers = await secretsFile.download()
+            console.log(buffers[0])
             return buffers[0]
         } catch (e) {
             console.log(e)

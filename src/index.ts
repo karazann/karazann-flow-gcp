@@ -22,9 +22,7 @@ const boot = async () => {
     const storageService = Container.get(StorageService)
 
     // Environment variable setup (in production download this form storage bucket to avoid unwanted access to env vars)
-    if (process.env.NODE_ENV !== 'production') {
-        config()
-    } else {
+    if (process.env.NODE_ENV === 'production') {
         const dotenv = await storageService.getDotenv(process.env.SECRETS_BUCKET as string)
         if (dotenv) {
             const env = parse(dotenv)
@@ -34,8 +32,11 @@ const boot = async () => {
                 }
             }
         }
+    } else {
+        config()
     }
-    console.log(process.env.DB_PASS)
+
+    console.log(process.env)
 
     // Setup typedi dependency injection for controllers
     useContainer(Container)
