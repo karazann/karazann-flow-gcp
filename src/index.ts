@@ -8,7 +8,11 @@ import { config, parse } from 'dotenv'
 import { logger } from './logger'
 
 logger.error('warp nacelles offline')
-logger.info('shields at 99%', { prefix: 'some-module' })
+logger.info('shields at 99%', {
+    labels: {
+        module: 'flow-service'
+    }
+})
 logger.debug('developent debug')
 
 /** Error Levels
