@@ -30,7 +30,7 @@ steps:
         "--concurrency",
         '4',
         '--set-env-vars',
-        'DB_PASS=berglas://${_BERGLAS_BUCKET}/DB_PASS'
+        'SECRETS_BUCKET=${_SECRETS_BUCKET}'
       ]
 
 images: ['gcr.io/${PROJECT_ID}/${_IMAGE_NAME}:latest']

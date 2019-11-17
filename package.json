@@ -4,6 +4,7 @@
     "description": "GCP Cloud Functions to run Karazann Flows on triggers",
     "main": "index.js",
     "scripts": {
+        "dev": "ts-node src/",
         "clean": "rm -rf ./dist/* ",
         "build": "node_modules/.bin/tsc",
         "start": "node ./dist",
@@ -21,10 +22,16 @@
     },
     "homepage": "https://github.com/szkabaroli/karazann-flow-gcp#readme",
     "dependencies": {
-        "@overnightjs/core": "^1.6.9",
+        "@google-cloud/logging-winston": "^3.0.0",
+        "@google-cloud/storage": "^4.1.2",
         "@szkabaroli/karazann-flow": "1.0.4",
+        "class-transformer": "^0.2.3",
+        "class-validator": "^0.11.0",
+        "dotenv": "^8.2.0",
         "express": "^4.17.1",
-        "typedi": "^0.8.0"
+        "routing-controllers": "^0.8.0",
+        "typedi": "^0.8.0",
+        "winston": "^3.2.1"
     },
     "devDependencies": {
         "ts-node": "^8.5.0",
