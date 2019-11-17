@@ -17,11 +17,7 @@ export class StorageService {
             const buffers = await secretsFile.download()
             return buffers[0]
         } catch (e) {
-            const entry = {
-                severity: 'CRITICAL',
-                message: `Failed to load .env from bucket: ${bucketName}`
-            }
-            console.error(entry)
+            logger.error({ severity: "CRITICAL", message: 'Failed to load .env from bucket: ${bucketName}' })
             return null
         }
     }
