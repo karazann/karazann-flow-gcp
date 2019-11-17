@@ -1,7 +1,7 @@
 steps:
     # pull .npmrc form Cloud Stroge
     - name: gcr.io/cloud-builders/gsutil
-      args: ['cp', 'gs://${_BERGLAS_BUCKET}/.npmrc', '.npmrc']
+      args: ['cp', 'gs://${_SECRETS_BUCKET}/.npmrc', '.npmrc']
     
     # Building image
     - name: "gcr.io/cloud-builders/docker"
