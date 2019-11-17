@@ -1,10 +1,9 @@
-import { JsonController, Body, Get, OnUndefined } from 'routing-controllers'
+import { JsonController, Body, Post } from 'routing-controllers'
+import { WorkerService } from '../services/WorkerService'
 
 @JsonController()
 export class FlowWorkerController {
-    constructor() {
-        console.log('Hello')
-    }
+    constructor(worker: WorkerService) {}
 
     /**
      * @api {post} /flow/process/:id Execute Flow Graph processing
@@ -21,9 +20,9 @@ export class FlowWorkerController {
      *
      * @apiSuccess (Success 201) {String} message Task saved successfully!
      */
-    @Get('/work')
-    private flowWorker(@Body() body: Object): Object {
+    @Post('/work')
+    public flowWorker(@Body() body: Object): Object {
         console.log(body)
-        return { test: 123}
+        return { test: 123 }
     }
 }

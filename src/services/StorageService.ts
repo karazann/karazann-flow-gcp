@@ -17,7 +17,7 @@ export class StorageService {
             const buffers = await secretsFile.download()
             return buffers[0]
         } catch (e) {
-            logger.error({ severity: "EMERGENCY", message: 'Failed to load .env from bucket: ${bucketName}' })
+            logger.emerg({ message: 'Failed to load .env from bucket: ${bucketName}' })
             return null
         }
     }
@@ -29,8 +29,7 @@ export class StorageService {
             console.log()
             return JSON.parse(buffers[0].toString())
         } catch (e) {
-            // Complete a structured log entry.
-            logger.error({ severity: "EMERGENCY", message: 'Failed to flow data request' })
+            logger.error({ message: 'Failed to flow data request' })
             return null
         }
     }
