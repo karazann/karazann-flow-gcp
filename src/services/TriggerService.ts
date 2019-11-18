@@ -1,4 +1,4 @@
-import { Service } from 'typedi'
+/*import { Service } from 'typedi'
 import { getRepository, Repository } from 'typeorm'
 import { Trigger } from '../models/trigger'
 
@@ -10,4 +10,4 @@ export class TriggerService {
         const trigger = new Trigger()
         return await this.userRepo.save(trigger)
     }
-}
+}*/
