@@ -1,22 +1,8 @@
-import { JsonController, Body, Post, OnUndefined, HttpCode } from 'routing-controllers'
+import { Body, Post, OnUndefined, HttpCode, Controller } from 'routing-controllers'
 import { logger } from '../logger'
+import { IPubSubMessange, IPubSubAck } from '../interfaces/PubSub'
 
-interface IPubSubMessange {
-    message: {
-        attributes: {
-            [key: string]: string
-        }
-        data: any
-        messageId: string
-    }
-    subscription: string
-}
-
-interface IPubSubAck {
-    success: boolean
-}
-
-@JsonController('/event')
+@Controller('/event')
 export class EventBrokerController {
     constructor() {
         console.log('Hello')
@@ -25,16 +11,10 @@ export class EventBrokerController {
     /**
      * @api {post} /flow/process/:id Execute Flow Graph processing
      * @apiName Process Flow from Storage Bucket
-     * @apiGroup Flow
+     * @apiGroup EventBroker
      * @apiPermission Google Cloud service account
      *
      * @apiParam (Request body) {String} flow_id of the flow
-     *
-     * @apiExample {js} Example usage:
-     * const data = {
-     *   "flow_id": <uuid of the flow>
-     * }
-     *
      * @apiSuccess (Success 201) {String} message Task saved successfully!
      */
     @Post('/user')

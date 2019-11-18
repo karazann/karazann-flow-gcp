@@ -3,6 +3,7 @@ import { Container, Inject } from 'typedi'
 import { useContainer, useExpressServer } from 'routing-controllers'
 import { StorageService } from './services/StorageService'
 import { config, parse } from 'dotenv'
+import bodyParser from 'body-parser'
 import { logger } from './logger'
 import express from 'express'
 
@@ -10,8 +11,7 @@ class Server {
     private app: express.Application
     private PRODUCTION_ENV = process.env.NODE_ENV === 'production'
 
-    @Inject()
-    private storageService!: StorageService
+    private storageService = Container.get(StorageService)
 
     constructor() {
         this.app = express()
@@ -27,11 +27,14 @@ class Server {
     }
 
     private config() {
+        this.app.use(bodyParser.json())
+        this.app.use(bodyParser.urlencoded({ extended: true }))
+
         // Setup typedi dependency injection for controllers
         useContainer(Container)
         // Use the existing server
         useExpressServer(this.app, {
-            controllers: [__dirname + "/controllers/*.ts"]
+            controllers: [__dirname + '/controllers/*.js', __dirname + '/controllers/*.ts']
         })
     }
 
