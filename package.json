@@ -34,6 +34,7 @@
         "express": "^4.17.1",
         "routing-controllers": "^0.8.0",
         "typedi": "^0.8.0",
+        "typeorm": "^0.2.20",
         "winston": "^3.2.1"
     },
     "devDependencies": {

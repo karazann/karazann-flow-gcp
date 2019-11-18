@@ -1,9 +1,13 @@
-import { JsonController, Body, Post } from 'routing-controllers'
+import { JsonController, Body, Post, Controller } from 'routing-controllers'
 import { WorkerService } from '../services/WorkerService'
+import { Inject } from 'typedi'
+import { logger } from '../logger'
 
-@JsonController()
-export class FlowWorkerController {
-    constructor(worker: WorkerService) {}
+@Controller()
+export class WorkerController {
+    
+    @Inject()
+    private worker!: WorkerService
 
     /**
      * @api {post} /flow/process/:id Execute Flow Graph processing
@@ -21,8 +25,9 @@ export class FlowWorkerController {
      * @apiSuccess (Success 201) {String} message Task saved successfully!
      */
     @Post('/work')
-    public flowWorker(@Body() body: Object): Object {
-        console.log(body)
+    public work(@Body() body: any): any {
+        logger.info(JSON.stringify(body))
+        const result = this.worker.processFlow('123', '1')
         return { test: 123 }
     }
 }

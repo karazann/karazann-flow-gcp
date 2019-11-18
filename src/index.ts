@@ -1,39 +1,60 @@
 import 'reflect-metadata' // this shim is required
-import { Container } from 'typedi'
-import { createExpressServer, useContainer } from 'routing-controllers'
-import { FlowWorkerController, FlowEventsController } from './controllers'
+import { Container, Inject } from 'typedi'
+import { useContainer, useExpressServer } from 'routing-controllers'
 import { StorageService } from './services/StorageService'
 import { config, parse } from 'dotenv'
+import { logger } from './logger'
+import express from 'express'
 
-const boot = async () => {
-    // Get the storage service
-    const storageService = Container.get(StorageService)
+class Server {
+    private app: express.Application
+    private PRODUCTION_ENV = process.env.NODE_ENV === 'production'
 
-    // Environment variable setup (in production download this form storage bucket to avoid unwanted access to env vars)
-    if (process.env.NODE_ENV === 'production') {
-        const dotenv = await storageService.getDotenv(process.env.SECRETS_BUCKET as string)
-        if (dotenv) {
-            const env = parse(dotenv)
-            for (const k in env) {
-                if (env.hasOwnProperty(k)) {
-                    process.env[k] = env[k]
-                }
-            }
-        }
-    } else {
-        config()
+    @Inject()
+    private storageService!: StorageService
+
+    constructor() {
+        this.app = express()
+        this.loadEnvVars()
+        this.config()
     }
 
-    // Setup typedi dependency injection for controllers
-    useContainer(Container)
+    public start(): void {
+        const PORT = parseInt(process.env.PORT as string, 10) || 8080
+        this.app.listen(PORT, () => {
+            logger.notice(`Server started on port: ${PORT}`)
+        })
+    }
 
-    const server = createExpressServer({
-        controllers: [FlowEventsController, FlowWorkerController] // we specify controllers we want to use
-    })
+    private config() {
+        // Setup typedi dependency injection for controllers
+        useContainer(Container)
+        // Use the existing server
+        useExpressServer(this.app, {
+            controllers: [__dirname + "/controllers/*.ts"]
+        })
+    }
 
-    // run express application on port
-    const PORT = parseInt(process.env.PORT as string, 10) || 8080
-    server.listen(PORT)
+    private async loadEnvVars(): Promise<boolean> {
+        // Environment variable setup (in production download this form storage bucket to avoid unwanted access to env vars)
+        if (this.PRODUCTION_ENV) {
+            const dotenv = await this.storageService.getDotenv(process.env.SECRETS_BUCKET as string)
+            if (dotenv) {
+                const env = parse(dotenv)
+                for (const k in env) {
+                    if (env.hasOwnProperty(k)) {
+                        process.env[k] = env[k]
+                    }
+                }
+                return true
+            } else {
+                return false
+            }
+        } else {
+            config()
+            return true
+        }
+    }
 }
 
-boot()
+new Server().start()
