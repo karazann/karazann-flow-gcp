@@ -1,9 +1,14 @@
+/**
+ * Copyright (c) 2019 Roland Sz.Kovács.
+ */
+
 import { createLogger, transports, format, config } from 'winston'
 
 const { combine, json } = format
 const { Console } = transports
 
-/** Error Levels
+/** 
+ * Error Levels
  * DEBUG     (7) Debug or trace information.
  * INFO      (6) Routine information, such as ongoing status or performance.
  * NOTICE    (5) Normal but significant events, such as start up, shut down, or a configuration change.
@@ -14,6 +19,7 @@ const { Console } = transports
  * EMERGENCY (0) One or more systems are unusable.
  */
 
+/** Create custom formater for stackdriver on Google Cloud Run */
 const stackdriver = format((info, opts) => {
     info.severity = info.level.toUpperCase()
 
@@ -31,6 +37,7 @@ const stackdriver = format((info, opts) => {
     return info
 })
 
+/** Logger object to use for general logging */
 export const logger = createLogger({
     level: process.env.NODE_ENV === 'production' ? 'info' : 'debug',
     levels: config.syslog.levels,

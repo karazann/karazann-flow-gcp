@@ -1,63 +1,53 @@
-import 'reflect-metadata' // this shim is required
-import { Container, Inject } from 'typedi'
-import { useContainer, useExpressServer } from 'routing-controllers'
-import { StorageService } from './services/StorageService'
-import { config, parse } from 'dotenv'
-import bodyParser from 'body-parser'
+/**
+ * Copyright (c) 2019 Roland Sz.Kovács.
+ */
+
+import 'reflect-metadata'
+
+import { loadEnv } from './config'
+loadEnv()
+
 import { logger } from './logger'
+import { connect } from './db'
+
 import express from 'express'
+import { Container } from 'typedi'
+
+import { json, urlencoded } from 'body-parser'
+import { useContainer, useExpressServer } from 'routing-controllers'
 
 class Server {
     private app: express.Application
-    private PRODUCTION_ENV = process.env.NODE_ENV === 'production'
-
-    private storageService = Container.get(StorageService)
 
     constructor() {
         this.app = express()
-        this.loadEnvVars()
-        this.config()
     }
-
-    public start(): void {
-        const PORT = parseInt(process.env.PORT as string, 10) || 8080
-        this.app.listen(PORT, () => {
-            logger.notice(`Server started on port: ${PORT}`)
+    
+    /**
+     * Starts the application at given port
+     * @param port Port to use when start the application
+     */
+    public async start(port: number) {
+        await connect()
+        this.config()
+        this.app.listen(port, () => {
+            logger.notice(`Server started on port: ${port}`)
         })
     }
 
+    /**
+     *  Setup body parsing, typedi container and routing-controllers
+     */
     private config() {
-        this.app.use(bodyParser.json())
-        this.app.use(bodyParser.urlencoded({ extended: true }))
+        this.app.use(json())
+        this.app.use(urlencoded({ extended: true }))
 
-        // Setup typedi dependency injection for controllers
         useContainer(Container)
-        // Use the existing server
+
         useExpressServer(this.app, {
             controllers: [__dirname + '/controllers/*.js', __dirname + '/controllers/*.ts']
         })
     }
-
-    private async loadEnvVars(): Promise<boolean> {
-        // Environment variable setup (in production download this form storage bucket to avoid unwanted access to env vars)
-        if (this.PRODUCTION_ENV) {
-            const dotenv = await this.storageService.getDotenv(process.env.SECRETS_BUCKET as string)
-            if (dotenv) {
-                const env = parse(dotenv)
-                for (const k in env) {
-                    if (env.hasOwnProperty(k)) {
-                        process.env[k] = env[k]
-                    }
-                }
-                return true
-            } else {
-                return false
-            }
-        } else {
-            config()
-            return true
-        }
-    }
 }
 
-new Server().start()
+new Server().start(8080 || process.env.PORT)
