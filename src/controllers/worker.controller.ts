@@ -1,8 +1,7 @@
-import { JsonController, Body, Post, Controller, Req, BadRequestError } from 'routing-controllers'
-import { WorkerService } from '../services/WorkerService'
+import { Post, Controller, Req, BadRequestError } from 'routing-controllers'
+import { WorkerService } from '../services/worker.service'
 import { Inject } from 'typedi'
-import { logger } from '../logger'
-import { IPubSubMessange, IPubSubAck } from '../interfaces/PubSub'
+import { IPubSubAck, IPubSubMessage } from '../interfaces/pubsub.interface'
 
 import { Request } from 'express'
 
@@ -23,10 +22,10 @@ export class WorkerController {
      */
     @Post('/work')
     private work(@Req() req: Request): IPubSubAck {
-        const message: IPubSubMessange = req.body.message
+        const message: IPubSubMessage = req.body.message
 
         if (!message) throw new BadRequestError('Not valid PubSub message!')
-        if ((!message.messageId)) throw new BadRequestError('messageId field required!')
+        if (!message.messageId) throw new BadRequestError('messageId field required!')
         if (!(message.attributes || message.data)) throw new BadRequestError('data or attributes field required!')
 
         const result = this.worker.processFlow(message.data, '1')

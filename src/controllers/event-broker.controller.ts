@@ -1,16 +1,15 @@
 import { Body, Post, HttpCode, Controller, BadRequestError } from 'routing-controllers'
 import { Inject } from 'typedi'
 
-import { IPubSubMessange, IPubSubAck } from '../interfaces/PubSub'
+import { IPubSubMessage, IPubSubAck } from '../interfaces/pubsub.interface'
 import { TriggerService } from '../shared/trigger'
-import { logger } from '../logger'
+import { logger } from '../utils/logger'
 
 @Controller('/event')
 export class EventBrokerController {
+    
     @Inject()
     public triggerService!: TriggerService
-
-    
 
     /**
      * @api {post} /event/user Create all flow jobs based on this event
@@ -22,12 +21,12 @@ export class EventBrokerController {
      * @apiSuccess (Success 201) {String} message Task saved successfully!
      */
     @Post('/user')
-    @HttpCode(201)
+    @HttpCode(200)
     public async userEvent(@Body() body: any): Promise<any> {
         this.testMem()
 
         /** Validation */
-        const message: IPubSubMessange = body.message
+        const message: IPubSubMessage = body.message
 
         if (!message) throw new BadRequestError('Not valid PubSub message!')
         if (!message.messageId) throw new BadRequestError('messageId field required!')
@@ -59,7 +58,7 @@ export class EventBrokerController {
 
     @Post('/time')
     @HttpCode(201) // Created
-    public async timeEvent(@Body() body: IPubSubMessange): Promise<IPubSubAck> {
+    public async timeEvent(@Body() body: IPubSubMessage): Promise<IPubSubAck> {
         logger.info({ message: JSON.stringify(body), module: 'mb-controller' })
         return { success: true }
     }

@@ -1,19 +1,19 @@
-import { FlowData } from './data'
+import { IFlowData } from './data'
 
 export const isValidId = (id: string): boolean => {
     return /^[\w-]{3,}@[0-9]+\.[0-9]+\.[0-9]+$/.test(id)
 }
 
-export const isValidData = (data: FlowData): boolean => {
+export const isValidData = (data: IFlowData): boolean => {
     return typeof data.id === 'string' && isValidId(data.id) && data.nodes instanceof Object && !(data.nodes instanceof Array)
 }
 
-interface ValidateResult {
+interface IValidateResult {
     success: boolean
     msg: string
 }
 
-export const validate = (id: string, data: FlowData): ValidateResult => {
+export const validate = (id: string, data: IFlowData): IValidateResult => {
     const id1 = id.split('@')
     const id2 = data.id.split('@')
     const msg = []

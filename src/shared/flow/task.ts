@@ -1,17 +1,17 @@
-import { WorkerOutputs, WorkerInputs, NodeData } from './core/data'
+import { IWorkerOutputs, IWorkerInputs, INodeData } from './core/data'
 import { NodeBuilder } from './builder'
 
-type Worker = (ctx: Task, inputs: WorkerInputs, data: any) => WorkerOutputs
+type Worker = (ctx: Task, inputs: IWorkerInputs, data: any) => IWorkerOutputs
 type OutputType = 'flow' | 'data'
 
 export interface ITaskConfig {
-    init?: (task: Task, node?: NodeData) => void
+    init?: (task: Task, node?: INodeData) => void
     outputs: { [key: string]: OutputType }
 }
 
 export class Task {
     private next: unknown[] = []
-    private outputData!: WorkerOutputs
+    private outputData!: IWorkerOutputs
     private closed: unknown[] = []
 
     // TODO: Replace any with proper type

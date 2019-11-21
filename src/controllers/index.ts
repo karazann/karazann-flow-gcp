@@ -1,2 +1,2 @@
-export * from './EventBrokerController'
-export * from './WorkerController'
+export * from './event-broker.controller'
+export * from './worker.controller'

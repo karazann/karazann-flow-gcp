@@ -1,4 +1,4 @@
-import { NodeData, WorkerInputs, WorkerOutputs } from './core/data'
+import { INodeData, IWorkerInputs, IWorkerOutputs } from './core/data'
 import { Node } from './node'
 import { ITaskConfig } from './task'
 
@@ -25,6 +25,6 @@ export abstract class NodeBuilder {
         return node
     }
 
-    public abstract worker(node: NodeData, inputs: WorkerInputs, outputs: WorkerOutputs): void
+    public abstract worker(node: INodeData, inputs: IWorkerInputs, outputs: IWorkerOutputs): void
     protected abstract async build(node: Node): Promise<void>
 }

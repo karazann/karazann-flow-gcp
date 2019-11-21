@@ -2,7 +2,7 @@
  * Copyright (c) 2019 Roland Sz.Kovács.
  */
 
-import { StorageService } from './services/StorageService'
+import { StorageService } from '../services/storage.service'
 import { config, parse } from 'dotenv'
 import { Container } from 'typedi'
 

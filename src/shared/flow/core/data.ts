@@ -1,51 +1,51 @@
-export interface ConnectionData {
+export interface IConnectionData {
     node: number
     data: unknown
 }
 
-export type InputConnectionData = ConnectionData & {
+export type InputConnectionData = IConnectionData & {
     output: string
 }
-export type OutputConnectionData = ConnectionData & {
+export type OutputConnectionData = IConnectionData & {
     input: string
 }
 
-export interface InputData {
+export interface IInputData {
     connections: InputConnectionData[]
 }
-export interface OutputData {
+export interface IOutputData {
     connections: OutputConnectionData[]
 }
 
-export interface InputsData {
-    [key: string]: InputData
+export interface IInputsData {
+    [key: string]: IInputData
 }
-export interface OutputsData {
-    [key: string]: OutputData
+export interface IOutputsData {
+    [key: string]: IOutputData
 }
 
-export interface NodeData {
+export interface INodeData {
     id: number
     name: string
-    inputs: InputsData
-    outputs: OutputsData
+    inputs: IInputsData
+    outputs: IOutputsData
     data: { [key: string]: unknown }
     position: [number, number]
 }
 
-export interface NodesData {
-    [id: string]: NodeData
+export interface INodesData {
+    [id: string]: INodeData
 }
 
-export interface FlowData {
+export interface IFlowData {
     id: string
-    nodes: NodesData
+    nodes: INodesData
 }
 
-export interface WorkerInputs {
+export interface IWorkerInputs {
     [key: string]: unknown[]
 }
 
-export interface WorkerOutputs {
+export interface IWorkerOutputs {
     [key: string]: unknown
 }

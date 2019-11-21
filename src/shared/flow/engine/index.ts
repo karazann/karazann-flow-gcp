@@ -1,28 +1,30 @@
-import { FlowData, NodeData, WorkerInputs, WorkerOutputs } from '../core/data'
+import { IFlowData, INodeData, IWorkerInputs, IWorkerOutputs } from '../core/data'
 import State from './state'
 import { NodeBuilder } from '../builder'
 import { Context } from '../core/context'
 
-const copy = (data: FlowData): FlowData => {
+const copy = (data: IFlowData) => {
     return JSON.parse(JSON.stringify(data))
 }
 
-interface IEngineNode extends NodeData {
+interface IEngineNode extends INodeData {
     busy: boolean
     unlockPool: Array<() => void>
-    outputData: WorkerOutputs
+    outputData: IWorkerOutputs
 }
 
 export class FlowEngine extends Context {
-    private data: FlowData | null = null
+    private data: IFlowData | null = null
     private state = State.AVAILABLE
 
     constructor(id: string) {
         super(id)
     }
 
-    public async process(data: FlowData, startId: number | string | null = null): Promise<string | void> {
-        if (!this.processStart()) {return}
+    public async process(data: IFlowData, startId: number | string | null = null): Promise<string | void> {
+        if (!this.processStart()) {
+            return
+        }
         // if (!this.validate(data)) return
 
         this.data = copy(data)
@@ -89,15 +91,15 @@ export class FlowEngine extends Context {
         node.busy = false
     }
 
-    private async extractInputData(nodeData: NodeData): Promise<WorkerInputs> {
-        const obj: WorkerInputs = {}
+    private async extractInputData(nodeData: INodeData): Promise<IWorkerInputs> {
+        const obj: IWorkerInputs = {}
 
         for (const key of Object.keys(nodeData.inputs)) {
             const input = nodeData.inputs[key]
             const conns = input.connections
             const connData = await Promise.all(
                 conns.map(async c => {
-                    const prevNode = (this.data as FlowData).nodes[c.node]
+                    const prevNode = (this.data as IFlowData).nodes[c.node]
 
                     const outputs = await this.processNode(prevNode as IEngineNode)
 
@@ -115,10 +117,10 @@ export class FlowEngine extends Context {
         return obj
     }
 
-    private async processWorker(nodeData: NodeData): Promise<WorkerOutputs> {
+    private async processWorker(nodeData: INodeData): Promise<IWorkerOutputs> {
         const inputData = await this.extractInputData(nodeData)
         const node = this.nodes.get(nodeData.name) as NodeBuilder
-        const outputData: WorkerOutputs = {}
+        const outputData: IWorkerOutputs = {}
 
         try {
             await node.worker(nodeData, inputData, outputData)
@@ -129,7 +131,7 @@ export class FlowEngine extends Context {
         return outputData
     }
 
-    private async processNode(node: IEngineNode): Promise<WorkerOutputs | null> {
+    private async processNode(node: IEngineNode): Promise<IWorkerOutputs | null> {
         if (this.state === State.ABORT || !node) {
             return null
         }
@@ -146,7 +148,7 @@ export class FlowEngine extends Context {
         return node.outputData
     }
 
-    private async forwardProcess(node: NodeData): Promise<void[][] | null> {
+    private async forwardProcess(node: INodeData): Promise<void[][] | null> {
         if (this.state === State.ABORT) {
             return null
         }
@@ -157,7 +159,7 @@ export class FlowEngine extends Context {
 
                 return await Promise.all(
                     output.connections.map(async c => {
-                        const nextNode = (this.data as FlowData).nodes[c.node]
+                        const nextNode = (this.data as IFlowData).nodes[c.node]
 
                         await this.processNode(nextNode as IEngineNode)
                         await this.forwardProcess(nextNode)
@@ -172,7 +174,7 @@ export class FlowEngine extends Context {
             return
         }
 
-        const startNode = (this.data as FlowData).nodes[id]
+        const startNode = (this.data as IFlowData).nodes[id]
 
         if (!startNode) {
             return await this.throw('Node with such id not found')
@@ -183,7 +185,7 @@ export class FlowEngine extends Context {
     }
 
     private async processUnreachable(): Promise<void> {
-        const data = this.data as FlowData
+        const data = this.data as IFlowData
 
         for (const i of Object.keys(data.nodes)) {
             // process nodes that have not been reached

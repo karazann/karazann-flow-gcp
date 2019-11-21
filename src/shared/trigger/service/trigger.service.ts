@@ -1,6 +1,6 @@
 import { Service } from 'typedi'
-import { getRepository, Repository, getConnection } from 'typeorm'
-import { Trigger } from '../model/TriggerEntity'
+import { getRepository, Repository } from 'typeorm'
+import { Trigger } from '../model/trigger.entity'
 import { ReadStream } from 'typeorm/platform/PlatformTools'
 
 @Service()
@@ -12,13 +12,11 @@ export class TriggerService {
 
         trigger.eventName = eventName
         trigger.flowId = flowId
-    
+
         return await this.triggerRepo.save(trigger)
     }
 
     public async getStreamByEvent(eventName: string): Promise<ReadStream> {
-        return await this.triggerRepo
-            .createQueryBuilder('trigger')
-            .stream()
+        return await this.triggerRepo.createQueryBuilder('trigger').stream()
     }
 }

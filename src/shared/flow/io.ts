@@ -1,6 +1,6 @@
 import { Node } from './node'
 import { Pin } from './pin'
-import { InputData, OutputData } from './core/data'
+import { IInputData, IOutputData } from './core/data'
 
 export class Connection {
     constructor(public output: Output, public input: Input, public data: unknown = {}) {
@@ -47,7 +47,7 @@ export class Input extends IO {
         this.connections.push(connection)
     }
 
-    public toJSON(): InputData {
+    public toJSON(): IInputData {
         return {
             connections: this.connections.map(c => {
                 if (!c.output.node) throw new Error('Node not added to Output')
@@ -84,7 +84,7 @@ export class Output extends IO {
         })
     }
 
-    public toJSON(): OutputData {
+    public toJSON(): IOutputData {
         return {
             connections: this.connections.map(c => {
                 if (!c.input.node) throw new Error('Node not added to Input')

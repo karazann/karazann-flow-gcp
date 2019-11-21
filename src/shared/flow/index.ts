@@ -4,13 +4,4 @@ import { Pin } from './pin'
 import { FlowEngine } from './engine/index'
 import { NodeBuilder } from './builder'
 
-export {
-    Connection,
-    FlowEngine,
-    IO,
-    Input,
-    Node,
-    NodeBuilder,
-    Output,
-    Pin
-}
+export { Connection, FlowEngine, IO, Input, Node, NodeBuilder, Output, Pin }

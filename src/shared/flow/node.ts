@@ -1,5 +1,5 @@
 import { Input, Output } from './io'
-import { NodeData, InputsData, OutputsData } from './core/data'
+import { INodeData, IInputsData, IOutputsData } from './core/data'
 
 export class Node {
     private static latestId = 0
@@ -8,7 +8,7 @@ export class Node {
         else this.latestId++
         return this.latestId
     }
-    
+
     // Node Data
     public id: number
     public inputs = new Map<string, Input>()
@@ -44,7 +44,7 @@ export class Node {
         this.outputs.delete(output.key)
     }
 
-    public toJSON(): NodeData {
+    public toJSON(): INodeData {
         const reduceIO = <T extends any>(list: Map<string, Input | Output>): T => {
             return Array.from(list).reduce<T>((obj, [key, io]) => {
                 obj[key] = io.toJSON()
@@ -55,8 +55,8 @@ export class Node {
         return {
             id: this.id,
             data: this.data,
-            inputs: reduceIO<InputsData>(this.inputs),
-            outputs: reduceIO<OutputsData>(this.outputs),
+            inputs: reduceIO<IInputsData>(this.inputs),
+            outputs: reduceIO<IOutputsData>(this.outputs),
             position: this.position,
             name: this.name
         }

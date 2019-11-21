@@ -7,7 +7,7 @@ import { createLogger, transports, format, config } from 'winston'
 const { combine, json } = format
 const { Console } = transports
 
-/** 
+/**
  * Error Levels
  * DEBUG     (7) Debug or trace information.
  * INFO      (6) Routine information, such as ongoing status or performance.
@@ -25,7 +25,7 @@ const stackdriver = format((info, opts) => {
 
     // fix for default levels
     if (info.severity === 'CRIT') info.severity = 'CRITICAL'
-    if(info.severity === 'EMERG') info.severity = 'EMERGENCY'
+    if (info.severity === 'EMERG') info.severity = 'EMERGENCY'
 
     delete info.level
 

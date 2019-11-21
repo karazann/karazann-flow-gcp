@@ -1,7 +1,7 @@
 import { Storage } from '@google-cloud/storage'
 import { Service } from 'typedi'
 import { FlowData } from '@szkabaroli/karazann-flow/lib/core/data'
-import { logger } from '../logger'
+import { logger } from '../utils/logger'
 
 @Service()
 export class StorageService {
