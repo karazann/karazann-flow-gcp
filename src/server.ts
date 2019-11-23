@@ -27,8 +27,8 @@ export class Server {
      * Starts the application at given port
      * @param port Port to use when start the application
      */
-    public async start(port: number) {
-        await connect()
+    public start(port: number) {
+        connect()
         this.app.listen(port, () => {
             logger.notice(`Server started on port: ${port}`)
         })

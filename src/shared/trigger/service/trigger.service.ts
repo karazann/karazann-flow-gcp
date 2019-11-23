@@ -7,16 +7,11 @@ import { ReadStream } from 'typeorm/platform/PlatformTools'
 export class TriggerService {
     private readonly triggerRepo: Repository<Trigger> = getRepository(Trigger)
 
-    public async createTrigger(eventName: string, flowId: string): Promise<Trigger> {
-        const trigger = new Trigger()
-
-        trigger.eventName = eventName
-        trigger.flowId = flowId
-
-        return await this.triggerRepo.save(trigger)
-    }
-
-    public async getStreamByEvent(eventName: string): Promise<ReadStream> {
-        return await this.triggerRepo.createQueryBuilder('trigger').stream()
+    getStreamByEvent(eventName: string): Promise<ReadStream> {
+        const b = this.triggerRepo
+            .createQueryBuilder('trigger')
+            .select(['trigger.flowId', 'trigger.triggerNode'])
+            .where('trigger.event_name = :eventName', { eventName })
+        return b.stream()
     }
 }

@@ -24,10 +24,9 @@ const config = (): ConnectionOptions => {
 
         /** Development Mode */
         ...(process.env.NODE_ENV === 'development' && {
-            synchronize: false,
             port: 5432
         }),
-
+        
         /** Testing Mode */
         ...(process.env.NODE_ENV === 'test' && {
             port: 5432,
@@ -51,8 +50,7 @@ const config = (): ConnectionOptions => {
 export const connect = async () => {
     let connection: Connection | null = null
 
-    console.log(config())
-
+    
     try {
         connection = getConnection(config().name)
         logger.notice('DB connection found.')

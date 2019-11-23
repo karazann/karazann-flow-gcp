@@ -4,6 +4,21 @@
     "flow@0.0.1": {
         "files": [
             {
+                "relativePath": "src/shared/flow/__tests__/data.ts",
+                "test": false,
+                "name": "data.ts"
+            },
+            {
+                "relativePath": "src/shared/flow/__tests__/engine.spec.ts",
+                "test": false,
+                "name": "engine.spec.ts"
+            },
+            {
+                "relativePath": "src/shared/flow/__tests__/flowdata.ts",
+                "test": false,
+                "name": "flowdata.ts"
+            },
+            {
                 "relativePath": "src/shared/flow/builder.ts",
                 "test": false,
                 "name": "builder.ts"
@@ -82,14 +97,14 @@
                 "name": "index.ts"
             },
             {
-                "relativePath": "src/shared/trigger/model/Trigger.ts",
+                "relativePath": "src/shared/trigger/model/trigger.entity.ts",
                 "test": false,
-                "name": "Trigger.ts"
+                "name": "trigger.entity.ts"
             },
             {
-                "relativePath": "src/shared/trigger/service/TriggerService.ts",
+                "relativePath": "src/shared/trigger/service/trigger.service.ts",
                 "test": false,
-                "name": "TriggerService.ts"
+                "name": "trigger.service.ts"
             }
         ],
         "mainFile": "src/shared/trigger/index.ts",

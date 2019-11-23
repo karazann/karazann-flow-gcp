@@ -2,11 +2,12 @@
     "extends": ["tslint:recommended", "tslint-config-prettier"],
     "rules": {
         "ordered-imports": [false],
-        "no-console": [false],
+        "no-console": [true, "log", "error", "warn", "info"],
         "curly": [true, "ignore-same-line"],
         "object-literal-sort-keys": [false],
         "no-string-literal": [false],
         "max-classes-per-file": [true, 4],
+        "member-access": [true, "no-public"],
         "semicolon": [true, "never"]
     }
 }

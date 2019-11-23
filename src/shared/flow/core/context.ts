@@ -1,8 +1,6 @@
 import { isValidId } from './validator'
 import { NodeBuilder } from '../builder'
-import { WorkerInputs, WorkerOutputs, NodeData } from './data'
 import { Task } from '../task'
-import { Worker } from 'cluster'
 
 export class Context {
     protected plugins!: Map<string, unknown>

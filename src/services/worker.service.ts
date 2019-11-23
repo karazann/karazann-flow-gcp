@@ -10,7 +10,7 @@ export class WorkerService {
 
     private engine: FlowEngine = new FlowEngine('name@1.0.0')
 
-    public async processFlow(flowId: string, triggerId: string): Promise<boolean | void> {
+    async processFlow(flowId: string, triggerId: string): Promise<boolean | void> {
         logger.info(`Processing Flow: <${flowId}> form trigger: <${triggerId}>`)
     }
 }

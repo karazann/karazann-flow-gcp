@@ -1,15 +1,18 @@
-import { Body, Post, HttpCode, Controller, BadRequestError } from 'routing-controllers'
+import { Body, Post, HttpCode, Controller, BadRequestError, OnUndefined } from 'routing-controllers'
 import { Inject } from 'typedi'
 
 import { IPubSubMessage, IPubSubAck } from '../interfaces/pubsub.interface'
-import { TriggerService } from '../shared/trigger'
-import { logger } from '../utils/logger'
+import { EventBrokerService } from '../services/event-broker.service'
+
+interface IEventAttributes {
+    eventName: string
+    triggerId: string
+}
 
 @Controller('/event')
 export class EventBrokerController {
-    
     @Inject()
-    public triggerService!: TriggerService
+    private readonly brokerService!: EventBrokerService
 
     /**
      * @api {post} /event/user Create all flow jobs based on this event
@@ -20,51 +23,32 @@ export class EventBrokerController {
      * @apiParam (Request body) {String} flow_id of the flow
      * @apiSuccess (Success 201) {String} message Task saved successfully!
      */
-    @Post('/user')
+    @Post('/')
     @HttpCode(200)
-    public async userEvent(@Body() body: any): Promise<any> {
-        this.testMem()
-
-        /** Validation */
+    @OnUndefined(500)
+    async userEvent(@Body() body: any): Promise<IPubSubAck | undefined> {
+        // Validation
         const message: IPubSubMessage = body.message
 
         if (!message) throw new BadRequestError('Not valid PubSub message!')
         if (!message.messageId) throw new BadRequestError('messageId field required!')
-        if (!(message.attributes || message.data)) throw new BadRequestError('data or attributes field required!')
+        if (!message.attributes) throw new BadRequestError('attributes field required!')
 
-        /** Streaming triggers using this event */
-        const stream = await this.triggerService.getStreamByEvent('event_name')
+        // Attribute validation
+        const attr: IEventAttributes = message.attributes
 
-        stream.on('data', async data => {
-            const d = Object.keys(data).reduce((destination: any, key) => {
-                const newKey = key.split(/_(.+)/)[1]
-                destination[newKey] = data[key]
-                return destination
-            }, {})
+        if (!attr.eventName) throw new BadRequestError('eventName missing in attributes!')
 
-            // console.log('received:', data)
-            // console.log('transformed: ', d)
-            this.testMem()
-        })
+        try {
+            // Process the event using event broker service
+            await this.brokerService.processEvent(attr.eventName)
 
-        /** When stream ended log something */
-        stream.on('end', () => {
-            console.log('end')
-        })
-
-        return { success: true }
-        /** Ack the pub/sub message */
-    }
-
-    @Post('/time')
-    @HttpCode(201) // Created
-    public async timeEvent(@Body() body: IPubSubMessage): Promise<IPubSubAck> {
-        logger.info({ message: JSON.stringify(body), module: 'mb-controller' })
-        return { success: true }
-    }
-
-    private testMem() {
-        const used = process.memoryUsage().heapTotal
-        console.info(`heap: ${Math.round((used / 1024 / 1024) * 100) / 100} MB`)
+            // Ack the pub/sub message
+            return { success: true }
+        } catch (e) {
+            console.debug(e)
+            // On error return server error 500
+            return undefined
+        }
     }
 }
