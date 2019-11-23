@@ -1,7 +1,7 @@
-import { FlowEngine } from '@szkabaroli/karazann-flow'
 import { Service, Inject } from 'typedi'
 import { StorageService } from './storage.service'
 import { logger } from '../utils/logger'
+import { FlowEngine } from '../shared/flow'
 
 @Service()
 export class WorkerService {

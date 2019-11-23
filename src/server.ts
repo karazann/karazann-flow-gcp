@@ -17,7 +17,7 @@ import { json, urlencoded } from 'body-parser'
 import { useContainer, useExpressServer } from 'routing-controllers'
 
 export class Server {
-    public app: express.Application = express()
+    app: express.Application = express()
 
     constructor() {  
         this.config()
@@ -27,7 +27,7 @@ export class Server {
      * Starts the application at given port
      * @param port Port to use when start the application
      */
-    public start(port: number) {
+    start(port: number) {
         connect()
         this.app.listen(port, () => {
             logger.notice(`Server started on port: ${port}`)
