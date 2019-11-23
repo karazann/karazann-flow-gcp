@@ -1,12 +1,13 @@
-import { Post, Controller, Req, BadRequestError } from 'routing-controllers'
+import { Post, Controller, Req, BadRequestError, HttpCode, OnUndefined } from 'routing-controllers'
 import { WorkerService } from '../services/worker.service'
 import { Inject } from 'typedi'
 import { IPubSubAck, IPubSubMessage } from '../interfaces/pubsub.interface'
 
 import { Request } from 'express'
 
-@Controller()
+@Controller('/work')
 export class WorkerController {
+    
     @Inject()
     private worker!: WorkerService
 
@@ -20,16 +21,18 @@ export class WorkerController {
      *
      * @apiSuccess (Success 201) {String} message Task saved successfully!
      */
-    @Post('/work')
-    private work(@Req() req: Request): IPubSubAck {
+    @Post('/')
+    @HttpCode(200)
+    @OnUndefined(409)
+    async work(@Req() req: Request): Promise<IPubSubAck | undefined> {
         const message: IPubSubMessage = req.body.message
 
         if (!message) throw new BadRequestError('Not valid PubSub message!')
         if (!message.messageId) throw new BadRequestError('messageId field required!')
         if (!(message.attributes || message.data)) throw new BadRequestError('data or attributes field required!')
 
-        const result = this.worker.processFlow(message.data, '1')
+        // const result = this.worker.processFlow(message.data, '1')
 
-        return { success: true }
+        return Promise.resolve({ success: true })
     }
 }

@@ -9,7 +9,9 @@
         "build": "tsc -p tsconfig.json",
         "start": "cross-env NODE_ENV=production node dist/index.js",
         "start:test": "cross-env NODE_ENV=test ts-node src/index.ts",
-        "test": "cross-env NODE_ENV=test jest",
+        "test": "jest",
+        "test:watch": "jest --watchAll",
+        "test:cover": "jest --coverage --colors",
         "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
         "lint": "tslint -p tsconfig.json"
     },
@@ -61,17 +63,14 @@
         "packageManager": "npm"
     },
     "jest": {
+        "bail": 1,
+        "verbose": true,
         "testEnvironment": "node",
-        "coveragePathIgnorePatterns": [
-            "/node_modules/"
-        ],
-        "roots": [
-            "<rootDir>/src"
-        ],
-        "testMatch": [
-            "**/?(*.)+(spec|test).+(ts|tsx|js)"
-        ],
-        "transform": {
+        "setupFilesAfterEnv": ["<rootDir>/src/jest.setup.ts"],
+        "coveragePathIgnorePatterns": [ "/node_modules/" ],
+        "roots": [ "<rootDir>/src" ],
+        "testMatch": [ "**/?(*.)+(spec|test).+(ts|tsx|js)" ],
+        "transform": { 
             "^.+\\.(ts|tsx)?$": "ts-jest"
         },
         "globals": {

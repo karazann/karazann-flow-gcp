@@ -25,7 +25,7 @@ export class EventBrokerController {
      */
     @Post('/')
     @HttpCode(200)
-    @OnUndefined(500)
+    @OnUndefined(409)
     async userEvent(@Body() body: any): Promise<IPubSubAck | undefined> {
         // Validation
         const message: IPubSubMessage = body.message

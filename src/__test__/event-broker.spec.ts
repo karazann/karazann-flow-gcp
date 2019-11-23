@@ -1,45 +1,26 @@
-import request from 'supertest'
+import supertest from 'supertest'
 import { Server } from '../server'
 import { connect } from '../utils/db'
-import { logger } from '../utils/logger'
 import { IPubSubBody } from '../interfaces/pubsub.interface'
 import { Trigger } from '../shared/trigger'
 import { Topic } from '@google-cloud/pubsub'
 
 describe('Event Broker microservice', () => {
     let app: Express.Application
-    let savedEnv: any
-
-    const publishMock = jest.fn().mockReturnValue(Promise.resolve())
+    let publishMock: jest.Mock
 
     beforeAll(async () => {
-        // save current env vars
-        savedEnv = process.env
-
-        // Setup env vars for testing
-        process.env.DB_USER = 'postgres'
-        process.env.DB_PASSWORD = 'root'
-        process.env.DB_DATABASE = 'karazann-test'
-        process.env.TOPIC_JOBS = 'jobs-test'
-
-        // Silence winston
-        logger.silent = true
-
         // Connect to test database and get express app
         await connect()
         app = new Server().app
 
         // Mock the PubSub publish method with jest.fn()
+        publishMock = jest.fn().mockReturnValue(Promise.resolve())
         Topic.prototype.publish = publishMock
     })
 
     beforeEach(() => {
         publishMock.mockClear()
-    })
-
-    afterAll(() => {
-        // restore env vars
-        process.env = savedEnv
     })
 
     describe('POST /event/', () => {
@@ -64,7 +45,7 @@ describe('Event Broker microservice', () => {
             await trigger3.save()
 
             // Construsct a valid pub/sub msg
-            const pubsubPush: IPubSubBody = {
+            const validMessage: IPubSubBody = {
                 message: {
                     messageId: 'id-test',
                     attributes: {
@@ -74,10 +55,10 @@ describe('Event Broker microservice', () => {
                 subscriptionId: 'subscription-test'
             }
 
-            // Run supertest request
-            const response = await request(app)
+            // Run supertest
+            const response = await supertest(app)
                 .post('/event/')
-                .send(pubsubPush)
+                .send(validMessage)
 
             const buffer = Buffer.from(
                 JSON.stringify({
@@ -94,8 +75,6 @@ describe('Event Broker microservice', () => {
             // Should ack the msg
             expect(response.status).toBe(200)
             expect(response.body.success).toBe(true)
-
-            // And finally we are done
             done()
         })
 
@@ -109,13 +88,12 @@ describe('Event Broker microservice', () => {
             }
 
             // Run supertest
-            const response = await request(app)
+            const response = await supertest(app)
                 .post('/event/')
                 .send(pubsubPush)
 
             // Should return bad request
             expect(response.status).toBe(400)
-
             done()
         })
     })
