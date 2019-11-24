@@ -3,20 +3,20 @@ import { Node } from './node'
 import { ITaskConfig } from './task'
 
 export abstract class NodeBuilder {
-    public data: unknown = {}
-    public name: string
-    public task!: ITaskConfig
+    task!: ITaskConfig
+    name: string
+    data: unknown = {}
 
     constructor(name: string) {
         this.name = name
     }
 
-    public async runBuild(node: Node): Promise<Node> {
+    async runBuild(node: Node): Promise<Node> {
         await this.build(node)
         return node
     }
 
-    public async createNode(data = {}): Promise<Node> {
+    async createNode(data = {}): Promise<Node> {
         const node = new Node(this.name)
 
         node.data = data
@@ -25,6 +25,6 @@ export abstract class NodeBuilder {
         return node
     }
 
-    public abstract worker(node: INodeData, inputs: IWorkerInputs, outputs: IWorkerOutputs): void
-    protected abstract async build(node: Node): Promise<void>
+    abstract worker(node: INodeData, inputs: IWorkerInputs, outputs: IWorkerOutputs): void | Promise<void>
+    abstract build(node: Node): void | Promise<void>
 }

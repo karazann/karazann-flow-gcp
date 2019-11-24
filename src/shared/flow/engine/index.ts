@@ -21,7 +21,7 @@ export class FlowEngine extends Context {
         super(id)
     }
 
-    public async process(data: IFlowData, startId: number | string | null = null): Promise<string | void> {
+    async process(data: IFlowData, startId: number | string | null = null): Promise<string | void> {
         if (!this.processStart()) {
             return
         }
@@ -35,7 +35,7 @@ export class FlowEngine extends Context {
         return this.processDone() ? 'success' : 'aborted'
     }
 
-    public async exit(): Promise<void> {
+    async exit(): Promise<void> {
         return new Promise(ret => {
             if (this.state === State.PROCESSED) {
                 this.state = State.ABORT
@@ -55,7 +55,7 @@ export class FlowEngine extends Context {
             return false
         }
 
-        console.log(`The process is busy and has not been restarted. Use abort() to force it to complete`)
+        console.debug(`The process is busy and has not been restarted. Use abort() to force it to complete`)
         return false
     }
 
@@ -144,7 +144,7 @@ export class FlowEngine extends Context {
 
         this.unlock(node)
 
-        console.log('processNode')
+        console.debug('processNode')
         return node.outputData
     }
 

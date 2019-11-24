@@ -1,5 +1,5 @@
 export interface IPubSubBody {
-    message: IPubSubMessage,
+    message: IPubSubMessage
     subscriptionId: string
 }
 

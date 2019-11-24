@@ -10,41 +10,41 @@ export class Node {
     }
 
     // Node Data
-    public id: number
-    public inputs = new Map<string, Input>()
-    public outputs = new Map<string, Output>()
-    public data: { [key: string]: unknown } = {}
-    public position: [number, number] = [0.0, 0.0]
+    id: number
+    inputs = new Map<string, Input>()
+    outputs = new Map<string, Output>()
+    data: { [key: string]: unknown } = {}
+    position: [number, number] = [0.0, 0.0]
 
     constructor(public name: string) {
         this.id = Node.incrementId()
     }
 
-    public addInput(input: Input): Node {
+    addInput(input: Input): Node {
         this._add(this.inputs, input, 'node')
         return this
     }
 
-    public removeInput(input: Input): void {
+    removeInput(input: Input): void {
         input.removeConnections()
         input.node = null
 
         this.inputs.delete(input.key)
     }
 
-    public addOutput(output: Output): Node {
+    addOutput(output: Output): Node {
         this._add(this.outputs, output, 'node')
         return this
     }
 
-    public removeOutput(output: Output): void {
+    removeOutput(output: Output): void {
         output.removeConnections()
         output.node = null
 
         this.outputs.delete(output.key)
     }
 
-    public toJSON(): INodeData {
+    toJSON(): INodeData {
         const reduceIO = <T extends any>(list: Map<string, Input | Output>): T => {
             return Array.from(list).reduce<T>((obj, [key, io]) => {
                 obj[key] = io.toJSON()

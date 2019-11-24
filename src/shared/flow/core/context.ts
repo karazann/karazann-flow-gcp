@@ -13,7 +13,7 @@ export class Context {
         this.nodes = new Map()
     }
 
-    public register(builder: NodeBuilder): void {
+    register(builder: NodeBuilder): void {
         if (this.nodes.has(builder.name)) throw new Error(`Builder ${builder.name} already registered`)
 
         this.nodes.set(builder.name, builder)

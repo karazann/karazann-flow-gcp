@@ -25,8 +25,9 @@ interface IJobDescription {
 export class EventBrokerService {
     @Inject()
     private readonly triggerService!: TriggerService
+
     private readonly pubsub = new PubSub()
-    private batchPublisher: Topic
+    private readonly batchPublisher: Topic
 
     constructor() {
         const topicName = process.env.TOPIC_JOBS as string

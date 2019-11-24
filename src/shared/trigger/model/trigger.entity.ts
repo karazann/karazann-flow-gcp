@@ -3,7 +3,7 @@ import { Entity, PrimaryGeneratedColumn, Column, BaseEntity } from 'typeorm'
 export interface ITrigger {
     triggerId: string
     flowId: string
-    eventName: string,
+    eventName: string
     triggerNode: string
 }
 
@@ -20,7 +20,7 @@ export class Trigger extends BaseEntity implements ITrigger {
     // This is the node that represent this trigger in the flow
     @Column({ type: 'text', name: 'triggerNode', nullable: false })
     triggerNode!: string
-    
+
     // This is the event when this trigger is getting invoked
     @Column({ type: 'text', name: 'event_name', nullable: false })
     eventName!: string

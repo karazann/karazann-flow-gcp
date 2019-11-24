@@ -19,7 +19,7 @@ import { useContainer, useExpressServer } from 'routing-controllers'
 export class Server {
     app: express.Application = express()
 
-    constructor() {  
+    constructor() {
         this.config()
     }
 

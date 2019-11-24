@@ -23,7 +23,7 @@ export class Task {
         })
     }
 
-    public async run(data: any, needReset = true, garbage: Task[] = [], propagate = true) {
+    async run(data: any, needReset = true, garbage: Task[] = [], propagate = true) {
         if (needReset) garbage.push(this)
 
         if (!this.outputData) {
@@ -44,13 +44,14 @@ export class Task {
 
             this.outputData = await this.worker(this, inputs, data)
 
-            if (propagate) await Promise.all(this.next.filter((f: any) => !this.closed.includes(f.key)).map(async (f: any) => await f.task.run(data, false, garbage)))
+            const nexts = this.next.filter((f: any) => !this.closed.includes(f.key)).map(async (f: any) => await f.task.run(data, false, garbage))
+            if (propagate) await Promise.all(nexts)
         }
 
         if (needReset) garbage.map(t => t.reset())
     }
 
-    public reset(): void {
+    reset(): void {
         this.outputData = {}
     }
 

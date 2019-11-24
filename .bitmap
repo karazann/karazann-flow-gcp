@@ -89,6 +89,24 @@
         "origin": "AUTHORED",
         "exported": false
     },
+    "nodes": {
+        "files": [
+            {
+                "relativePath": "src/shared/nodes/index.ts",
+                "test": false,
+                "name": "index.ts"
+            },
+            {
+                "relativePath": "src/shared/nodes/test-node.ts",
+                "test": false,
+                "name": "test-node.ts"
+            }
+        ],
+        "mainFile": "src/shared/nodes/index.ts",
+        "trackDir": "src/shared/nodes",
+        "origin": "AUTHORED",
+        "exported": false
+    },
     "trigger": {
         "files": [
             {

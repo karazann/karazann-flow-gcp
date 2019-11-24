@@ -64,13 +64,25 @@
     },
     "jest": {
         "bail": 1,
-        "verbose": true,
+        "verbose": false,
         "testEnvironment": "node",
-        "setupFilesAfterEnv": ["<rootDir>/src/jest.setup.ts"],
-        "coveragePathIgnorePatterns": [ "/node_modules/" ],
-        "roots": [ "<rootDir>/src" ],
-        "testMatch": [ "**/?(*.)+(spec|test).+(ts|tsx|js)" ],
-        "transform": { 
+        "setupFilesAfterEnv": [
+            "<rootDir>/src/jest.setup.ts"
+        ],
+        "testPathIgnorePatterns": [
+            "<rootDir>/src/shared"
+        ],
+        "coveragePathIgnorePatterns": [
+            "node_modules/",
+            "src/shared"
+        ],
+        "roots": [
+            "<rootDir>/src"
+        ],
+        "testMatch": [
+            "**/?(*.)+(spec|test).+(ts|tsx|js)"
+        ],
+        "transform": {
             "^.+\\.(ts|tsx)?$": "ts-jest"
         },
         "globals": {

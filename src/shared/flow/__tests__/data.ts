@@ -16,13 +16,13 @@ export class Builder1 extends NodeBuilder {
         }
     }
 
-    public async build(node: Node): Promise<void> {
+    async build(node: Node): Promise<void> {
         node.addOutput(new Output('act', 'On Time', flowPin))
         node.addOutput(new Output('key', 'Key code', numberPin))
     }
 
-    public worker(node: INodeData, inputs: IWorkerInputs, data: any): any {
-        console.log()
+    worker(node: INodeData, inputs: IWorkerInputs, data: any): any {
+        console.debug()
     }
 }
 
@@ -33,18 +33,18 @@ export class Builder2 extends NodeBuilder {
             outputs: {
                 act: 'flow',
                 key: 'data',
-                key2:'data'
+                key2: 'data'
             }
         }
     }
 
-    public async build(node: Node): Promise<void> {
+    async build(node: Node): Promise<void> {
         node.addOutput(new Output('act', 'On Time', flowPin))
         node.addOutput(new Output('key', 'Key code', numberPin))
         node.addOutput(new Output('key2', 'Key code', numberPin))
     }
 
-    public worker(node: INodeData, inputs: IWorkerInputs, data: any): any {
-        console.log()
+    worker(node: INodeData, inputs: IWorkerInputs, data: any): any {
+        console.debug()
     }
 }

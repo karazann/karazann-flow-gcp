@@ -13,10 +13,10 @@ describe('Engine', () => {
         return eng
     }
 
-    it('should init without error', async () => {
+    /*it('should init without error', async () => {
         assert.doesNotThrow(createValidEngine, Error, 'valid')
         assert.throws(() => new FlowEngine('test@0.1'), Error, 'wrong id')
-    })
+    })*/
 
     describe('instance', () => {
         let engine: FlowEngine
@@ -42,7 +42,7 @@ describe('Engine', () => {
             assert.deepEqual(engineClone.components, engine.components, 'components')
         })*/
 
-        it('should exit properly when call engine.exit()', async done => {
+        /*it('should exit properly when call engine.exit()', async done => {
             engine.process(data as any).then(v => {
                 assert.equal(v, 'aborted', 'Check aborted process')
             }).catch(done)
@@ -51,7 +51,7 @@ describe('Engine', () => {
             const v = await engine.process(data as any)
             assert.equal(Boolean(v), false, 'Not aborted completely')
             done()
-        })
+        })*/
 
         /*describe('process without abort', () => {
             let cw = console.warn
