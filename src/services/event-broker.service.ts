@@ -1,3 +1,7 @@
+/*!
+ * Copyright (c) 2019 Roland Sz.Kovács.
+ */
+
 import { PubSub, Topic } from '@google-cloud/pubsub'
 import { Service, Inject } from 'typedi'
 import { TriggerService, ITrigger } from '../shared/trigger'

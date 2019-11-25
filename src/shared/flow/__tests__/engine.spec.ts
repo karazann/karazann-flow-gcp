@@ -1,6 +1,9 @@
+/*!
+ * Copyright (c) 2019 Roland Sz.Kovács.
+ */
+
 import { FlowEngine } from '../engine'
 import { Builder1, Builder2 } from './data'
-import assert from 'assert'
 
 describe('Engine', () => {
     const id = 'test@0.0.1'

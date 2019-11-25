@@ -1,6 +1,11 @@
+/*!
+ * Copyright (c) 2019 Roland Sz.Kovács.
+ */
+
 import supertest from 'supertest'
 import { Server } from '../server'
 import { connect } from '../utils/db'
+import { IFlowData } from '../shared/flow/core/data'
 import { IPubSubBody } from '../interfaces/pubsub.interface'
 
 const mockedFile = {
@@ -37,35 +42,102 @@ describe('Worker microservice', () => {
     })
 
     describe('POST /work/', () => {
-        it('should ack the request', async done => {
-            // Construsct a valid pub/sub msg
-            const validMessage: IPubSubBody = {
-                message: {
-                    messageId: 'id-test',
-                    attributes: {
-                        flowId: 'test',
-                        triggerNode: '123'
+        const validMessage: IPubSubBody = {
+            message: {
+                messageId: 'id-test',
+                attributes: {
+                    flowId: 'test',
+                    triggerNode: '123'
+                }
+            },
+            subscriptionId: 'subscription-test'
+        }
+
+        beforeEach(() => {
+            mockedStorage.bucket.mockClear()
+            mockedBucket.file.mockClear()
+            mockedFile.download.mockClear()
+        })
+
+        it('should work if everything is fine', async done => {
+            const validFlowData: IFlowData = {
+                id: 'test@0.0.1',
+                nodes: {
+                    '1': {
+                        id: 1,
+                        data: {},
+                        inputs: {},
+                        outputs: {},
+                        position: [80, 200],
+                        name: 'Number'
                     }
-                },
-                subscriptionId: 'subscription-test'
+                }
             }
 
+            // Setup mock return value
+            mockedFile.download.mockResolvedValue(Buffer.from(JSON.stringify(validFlowData)))
+
+            // Fire supertest
             const response = await supertest(app)
                 .post('/work/')
                 .send(validMessage)
 
             // Expect to be properly init the service
-            // expect(mockedStorage.bucket).toBeCalledWith(process.env.BUCKET_FLOWS)
-            // expect(mockedStorage.bucket).toBeCalledTimes(1)
+            expect(mockedStorage.bucket).toBeCalledWith(process.env.BUCKET_FLOWS)
+            expect(mockedStorage.bucket).toBeCalledTimes(1)
 
             // Expect to be download the file from Cloud Storage
-            // expect(mockedBucket.file).toBeCalledWith('test')
-            // expect(mockedBucket.file).toBeCalledTimes(1)
-            // expect(mockedFile.download).toBeCalledTimes(1)
+            expect(mockedBucket.file).toBeCalledWith('test')
+            expect(mockedBucket.file).toBeCalledTimes(1)
+            expect(mockedFile.download).toBeCalledTimes(1)
 
             // check the request ack-d
             expect(response.status).toBe(200)
             expect(response.body.success).toBe(true)
+
+            done()
+        })
+
+        it('should fail properly if cant load the file', async done => {
+            // Setup mock download to throw error
+            mockedFile.download.mockRejectedValue(new Error('file download failed'))
+
+            // Fire supertest
+            const response = await supertest(app)
+                .post('/work/')
+                .send(validMessage)
+
+            // check return proper error code
+            expect(response.status).toBe(409)
+
+            done()
+        })
+
+        it.skip('should fail properly if the engine cant process the flow', async done => {
+            const invalidFlowData: IFlowData = {
+                id: 'test@0.0.1',
+                nodes: {
+                    '1': {
+                        id: 1,
+                        data: {},
+                        inputs: {},
+                        outputs: {},
+                        position: [80, 200],
+                        name: 'Number'
+                    }
+                }
+            }
+
+            // Setup mock to download invalid flow data
+            mockedFile.download.mockResolvedValue(Buffer.from(JSON.stringify(invalidFlowData)))
+
+            // Fire supertest
+            const response = await supertest(app)
+                .post('/work/')
+                .send(validMessage)
+
+            // check return proper error code
+            expect(response.status).toBe(409)
 
             done()
         })

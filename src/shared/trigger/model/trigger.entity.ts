@@ -1,3 +1,7 @@
+/*!
+ * Copyright (c) 2019 Roland Sz.Kovács.
+ */
+
 import { Entity, PrimaryGeneratedColumn, Column, BaseEntity } from 'typeorm'
 
 export interface ITrigger {

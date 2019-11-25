@@ -1,3 +1,7 @@
+/*!
+ * Copyright (c) 2019 Roland Sz.Kovács.
+ */
+
 import { logger } from './utils/logger'
 
 jest.setTimeout(10000)
@@ -16,7 +20,7 @@ beforeEach(() => {
     process.env.BUCKET_FLOWS = 'flows-test'
 
     // Silence winston
-    logger.silent = false
+    logger.silent = true
 })
 
 afterEach(() => {

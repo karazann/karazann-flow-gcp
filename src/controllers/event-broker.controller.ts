@@ -1,3 +1,7 @@
+/*!
+ * Copyright (c) 2019 Roland Sz.Kovács.
+ */
+
 import { Body, Post, HttpCode, Controller, BadRequestError, OnUndefined } from 'routing-controllers'
 import { Inject } from 'typedi'
 

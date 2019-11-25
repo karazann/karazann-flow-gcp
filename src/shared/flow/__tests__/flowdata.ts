@@ -1,3 +1,7 @@
+/*!
+ * Copyright (c) 2019 Roland Sz.Kovács.
+ */
+
 export default {
     id: 'test@0.0.1',
     nodes: {

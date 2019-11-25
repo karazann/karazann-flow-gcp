@@ -1,3 +1,7 @@
+/*!
+ * Copyright (c) 2019 Roland Sz.Kovács.
+ */
+
 import { INodeData, IWorkerInputs, IWorkerOutputs } from './core/data'
 import { Node } from './node'
 import { ITaskConfig } from './task'

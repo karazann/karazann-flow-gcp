@@ -1,3 +1,7 @@
+/*!
+ * Copyright (c) 2019 Roland Sz.Kovács.
+ */
+
 import { FlowEngine } from '../flow'
 import TestNode from './test-node'
 

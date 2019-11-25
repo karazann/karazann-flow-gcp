@@ -1,3 +1,7 @@
+/*!
+ * Copyright (c) 2019 Roland Sz.Kovács.
+ */
+
 import { Service } from 'typedi'
 import { Storage, Bucket } from '@google-cloud/storage'
 import { logger } from '../utils/logger'
@@ -36,7 +40,6 @@ export class WorkerService {
 
         // Download the file and handle errors
         try {
-            console.debug('Downloading flow: ', flowId)
             flowData = await this.downloadFlow(flowId)
         } catch (e) {
             logger.error(e)
@@ -47,7 +50,8 @@ export class WorkerService {
         // Process the flow and handle error
         try {
             console.debug(`Processing flow: ${flowId} form trigger: ${triggerNode}`)
-            await this.engine.process(flowData)
+            // TODO finish flow engie to be used here 
+            // await this.engine.process(flowData)
         } catch (e) {
             logger.error(e)
             logger.error(`Failed to process flow: ${flowId}`)

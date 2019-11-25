@@ -1,3 +1,7 @@
+/*!
+ * Copyright (c) 2019 Roland Sz.Kovács.
+ */
+
 import { Service } from 'typedi'
 import { getRepository, Repository } from 'typeorm'
 import { Trigger } from '../model/trigger.entity'

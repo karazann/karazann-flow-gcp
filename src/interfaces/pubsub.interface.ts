@@ -1,3 +1,7 @@
+/*!
+ * Copyright (c) 2019 Roland Sz.Kovács.
+ */
+
 export interface IPubSubBody {
     message: IPubSubMessage
     subscriptionId: string

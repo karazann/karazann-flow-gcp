@@ -1,3 +1,7 @@
+/*!
+ * Copyright (c) 2019 Roland Sz.Kovács.
+ */
+
 import { NodeBuilder, Node } from '../flow'
 
 export default class TestNode extends NodeBuilder {

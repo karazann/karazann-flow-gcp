@@ -1,3 +1,7 @@
+/*!
+ * Copyright (c) 2019 Roland Sz.Kovács.
+ */
+
 import { Connection, IO, Input, Output } from './io'
 import { Node } from './node'
 import { Pin } from './pin'

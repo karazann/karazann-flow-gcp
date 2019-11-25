@@ -1,3 +1,7 @@
+/*!
+ * Copyright (c) 2019 Roland Sz.Kovács.
+ */
+
 import { IFlowData, INodeData, IWorkerInputs, IWorkerOutputs } from '../core/data'
 import State from './state'
 import { NodeBuilder } from '../builder'

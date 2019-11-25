@@ -1,3 +1,7 @@
+/*!
+ * Copyright (c) 2019 Roland Sz.Kovács.
+ */
+
 import { IFlowData } from './data'
 
 export const isValidId = (id: string): boolean => {

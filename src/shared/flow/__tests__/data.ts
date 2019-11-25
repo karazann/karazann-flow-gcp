@@ -1,6 +1,9 @@
+/*!
+ * Copyright (c) 2019 Roland Sz.Kovács.
+ */
+
 import { NodeBuilder, Node, Output, Pin } from '../index'
 import { INodeData, IWorkerInputs } from '../core/data'
-import { Task } from '../task'
 
 const numberPin = new Pin('Number')
 const flowPin = new Pin('Flow')

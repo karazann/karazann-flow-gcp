@@ -1,3 +1,7 @@
+/*!
+ * Copyright (c) 2019 Roland Sz.Kovács.
+ */
+
 import { Input, Output } from './io'
 import { INodeData, IInputsData, IOutputsData } from './core/data'
 

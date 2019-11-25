@@ -1,3 +1,7 @@
+/*!
+ * Copyright (c) 2019 Roland Sz.Kovács.
+ */
+
 import { isValidId } from './validator'
 import { NodeBuilder } from '../builder'
 import { Task } from '../task'

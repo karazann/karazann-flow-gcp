@@ -1,3 +1,7 @@
+/*!
+ * Copyright (c) 2019 Roland Sz.Kovács.
+ */
+
 enum State {
     AVAILABLE = 0,
     PROCESSED = 1,

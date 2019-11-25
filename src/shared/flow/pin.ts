@@ -1,3 +1,7 @@
+/*!
+ * Copyright (c) 2019 Roland Sz.Kovács.
+ */
+
 export class Pin {
     constructor(private name: string, private compatible: Pin[] = [], private data = {}) {}
 

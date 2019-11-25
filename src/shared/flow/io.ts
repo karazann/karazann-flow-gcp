@@ -1,3 +1,7 @@
+/*!
+ * Copyright (c) 2019 Roland Sz.Kovács.
+ */
+
 import { Node } from './node'
 import { Pin } from './pin'
 import { IInputData, IOutputData } from './core/data'

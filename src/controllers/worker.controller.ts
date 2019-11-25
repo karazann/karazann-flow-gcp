@@ -1,3 +1,7 @@
+/*!
+ * Copyright (c) 2019 Roland Sz.Kovács.
+ */
+
 import { Post, Controller, BadRequestError, HttpCode, OnUndefined, Body } from 'routing-controllers'
 import { WorkerService } from '../services/worker.service'
 import { Inject } from 'typedi'
@@ -39,12 +43,10 @@ export class WorkerController {
 
         if (!attr.flowId) throw new BadRequestError('flowId missing in attributes!')
         if (!attr.triggerNode) throw new BadRequestError('triggerNode missing in attributes!')
-
-        try {
-            await this.worker.processFlow(attr.flowId, attr.triggerNode)
-            return { success: true }
-        } catch (e) {
-            return undefined
-        }
+        
+        const success = await this.worker.processFlow(attr.flowId, attr.triggerNode)
+        
+        if (success === true) return { success: true }
+        else return undefined
     }
 }

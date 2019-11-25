@@ -1,3 +1,7 @@
+/*!
+ * Copyright (c) 2019 Roland Sz.Kovács.
+ */
+
 import { IWorkerOutputs, IWorkerInputs, INodeData } from './core/data'
 import { NodeBuilder } from './builder'
 

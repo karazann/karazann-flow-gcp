@@ -8,6 +8,15 @@
         "no-string-literal": [false],
         "max-classes-per-file": [true, 4],
         "member-access": [true, "no-public"],
-        "semicolon": [true, "never"]
+        "semicolon": [true, "never"],
+        "file-header": [
+            true,
+            {
+                "match": "!\n \\* ?Copyright \\(c\\) 2019 Roland Sz\\.Kovács\\.",
+                "allow-single-line-comments": true,
+                "default": "Copyright (c) 2019 Roland Sz.Kovács.",
+                "enforce-trailing-newline": false
+            }
+        ]
     }
 }
