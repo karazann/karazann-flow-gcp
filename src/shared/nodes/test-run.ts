@@ -9,7 +9,6 @@ import { Task } from '../flow/task'
 const FlowPin = new Pin('Flow')
 const NumberPin = new Pin('Number')
 
-let runs: () => void = () => {}
 
 class TimerNode extends NodeBuilder {
     constructor() {
@@ -19,16 +18,7 @@ class TimerNode extends NodeBuilder {
                 act: 'flow',
                 key: 'data'
             },
-            init(task: Task) {
-                // tslint:disable-next-line: only-arrow-functions
-                runs = () => {
-                    
-                    setTimeout(() => {
-                        task.run({t: 323})
-                        task.reset()
-                    }, 0)
-                }
-            }
+            eventName: 'test'
         }
     }
 
@@ -94,7 +84,7 @@ const run = async (): Promise<void> => {
     await engine.exit()
     await engine.process(flowData, 1)
 
-    runs()
+    // await engine.event('test')
 }
 
 run()

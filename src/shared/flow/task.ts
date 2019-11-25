@@ -10,6 +10,7 @@ type OutputType = 'flow' | 'data'
 
 export interface ITaskConfig {
     init?: (task: Task, node?: INodeData) => void
+    eventName?: string
     outputs: { [key: string]: OutputType }
 }
 
@@ -55,7 +56,7 @@ export class Task {
         if (needReset) garbage.map(t => t.reset())
     }
 
-    reset(): void {
+    reset() {
         this.outputData = {}
     }
 
