@@ -22,7 +22,7 @@ export class Trigger extends BaseEntity implements ITrigger {
     flowId!: string
 
     // This is the node that represent this trigger in the flow
-    @Column({ type: 'text', name: 'triggerNode', nullable: false })
+    @Column({ type: 'text', name: 'trigger_node', nullable: false })
     triggerNode!: string
 
     // This is the event when this trigger is getting invoked

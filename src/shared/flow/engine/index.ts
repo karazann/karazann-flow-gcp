@@ -29,6 +29,8 @@ export class FlowEngine extends Context {
         if (!this.processStart()) {
             return
         }
+
+        console.debug('process')
         // if (!this.validate(data)) return
 
         this.data = copy(data)

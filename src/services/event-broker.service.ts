@@ -8,7 +8,7 @@ import { TriggerService, ITrigger } from '../shared/trigger'
 
 const printMemory = () => {
     const used = process.memoryUsage().heapTotal
-    console.debug(`heap: ${Math.round((used / 1024 / 1024) * 100) / 100} MB`)
+    // console.debug(`heap: ${Math.round((used / 1024 / 1024) * 100) / 100} MB`)
 }
 
 const toCamel = (s: string) => {

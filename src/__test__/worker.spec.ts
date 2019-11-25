@@ -42,40 +42,68 @@ describe('Worker microservice', () => {
     })
 
     describe('POST /work/', () => {
+        
         const validMessage: IPubSubBody = {
             message: {
                 messageId: 'id-test',
                 attributes: {
                     flowId: 'test',
-                    triggerNode: '123'
+                    eventName: 'test',
+                    eventData: {
+                        data: 3213123
+                    }
                 }
             },
             subscriptionId: 'subscription-test'
         }
 
-        beforeEach(() => {
-            mockedStorage.bucket.mockClear()
-            mockedBucket.file.mockClear()
-            mockedFile.download.mockClear()
-        })
-
         it('should work if everything is fine', async done => {
             const validFlowData: IFlowData = {
-                id: 'test@0.0.1',
+                id: 'test@1.0.0',
                 nodes: {
                     '1': {
                         id: 1,
                         data: {},
                         inputs: {},
-                        outputs: {},
+                        outputs: {
+                            act: {
+                                connections: [
+                                    { node: 2, input: 'act', data: {} }
+                                ]
+                            },
+                            key: {
+                                connections: [
+                                    { node: 2, input: 'key', data: {} }
+                                ]
+                            }
+                        },
                         position: [80, 200],
-                        name: 'Number'
+                        name: 'Timer'
+                    },
+                    '2': {
+                        id: 2,
+                        data: {},
+                        inputs: {
+                            act: {
+                                connections: [
+                                    { node: 1, output: 'act', data: {} }]
+                                
+                            },
+                            key: {
+                                connections: [
+                                    { node: 1, output: 'key', data: {} }
+                                ]
+                            }
+                        },
+                        outputs: {},
+                        position: [80, 400],
+                        name: 'Print'
                     }
                 }
             }
 
             // Setup mock return value
-            mockedFile.download.mockResolvedValue(Buffer.from(JSON.stringify(validFlowData)))
+            mockedFile.download.mockResolvedValue([Buffer.from(JSON.stringify(validFlowData))])
 
             // Fire supertest
             const response = await supertest(app)
@@ -100,7 +128,7 @@ describe('Worker microservice', () => {
 
         it('should fail properly if cant load the file', async done => {
             // Setup mock download to throw error
-            mockedFile.download.mockRejectedValue(new Error('file download failed'))
+            mockedFile.download.mockRejectedValueOnce(new Error('file download failed'))
 
             // Fire supertest
             const response = await supertest(app)
@@ -113,7 +141,7 @@ describe('Worker microservice', () => {
             done()
         })
 
-        it.skip('should fail properly if the engine cant process the flow', async done => {
+        it.todo('should fail properly if the engine cant process the flow'/*, async done => {
             const invalidFlowData: IFlowData = {
                 id: 'test@0.0.1',
                 nodes: {
@@ -140,6 +168,6 @@ describe('Worker microservice', () => {
             expect(response.status).toBe(409)
 
             done()
-        })
+        }*/)
     })
 })

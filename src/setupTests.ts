@@ -4,26 +4,15 @@
 
 import { logger } from './utils/logger'
 
-jest.setTimeout(10000)
+beforeAll(() => {
+    // Silence winston
+    logger.transports.forEach(t => (t.silent = true))
 
-let savedEnv: any
-
-beforeEach(() => {
-    // save current env vars
-    savedEnv = process.env
-
-    // Setup env vars for testing
+    // Setup env variables for testing
+    process.env.NODE_ENV = 'test'
     process.env.DB_USER = 'postgres'
     process.env.DB_PASSWORD = 'root'
     process.env.DB_DATABASE = 'karazann-test'
     process.env.TOPIC_JOBS = 'jobs-test'
     process.env.BUCKET_FLOWS = 'flows-test'
-
-    // Silence winston
-    logger.transports.forEach(t => t.silent=true)
-})
-
-afterEach(() => {
-    // restore env vars
-    process.env = savedEnv
 })

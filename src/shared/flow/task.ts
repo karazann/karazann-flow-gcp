@@ -15,9 +15,9 @@ export interface ITaskConfig {
 }
 
 export class Task {
+    closed: unknown[] = []
     private next: unknown[] = []
     private outputData!: IWorkerOutputs
-    private closed: unknown[] = []
 
     // TODO: Replace any with proper type
     constructor(private inputs: any, private worker: any) {

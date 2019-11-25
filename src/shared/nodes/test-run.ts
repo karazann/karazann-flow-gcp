@@ -2,54 +2,9 @@
  * Copyright (c) 2019 Roland Sz.Kovács.
  */
 
-import { Node, NodeBuilder, Input, Output, FlowEngine, Pin,  } from '../flow'
-import { INodeData, IWorkerInputs, IWorkerOutputs, IFlowData } from '../flow/core/data'
-import { Task } from '../flow/task'
-
-const FlowPin = new Pin('Flow')
-const NumberPin = new Pin('Number')
-
-
-class TimerNode extends NodeBuilder {
-    constructor() {
-        super('Timer')
-        this.task = {
-            outputs: {
-                act: 'flow',
-                key: 'data'
-            },
-            eventName: 'test'
-        }
-    }
-
-    build(node: Node) {
-        node.addOutput(new Output('act', 'On Time', FlowPin))
-        node.addOutput(new Output('key', 'Key code', NumberPin))
-    }
-
-    worker(node: INodeData, inputs: IWorkerInputs, data: any): any {
-
-        return { key: 10 }
-    }
-}
-
-class PrintNode extends NodeBuilder {
-    constructor() {
-        super('Print')
-        this.task = {
-            outputs: {}
-        }
-    }
-
-    build(node: Node) {
-        node.addInput(new Input('act', 'Start', FlowPin))
-        node.addInput(new Input('key', 'Key', NumberPin))
-    }
-
-    worker(node: INodeData, inputs: IWorkerInputs, data: any) {
-        console.debug('Alert', node, data, inputs)
-    }
-}
+import { Input, Output, FlowEngine } from '../flow'
+import { IFlowData } from '../flow/core/data'
+import { TimerNode, PrintNode } from './index'
 
 const run = async (): Promise<void> => {
     const id = 'test@1.0.0'
@@ -81,10 +36,12 @@ const run = async (): Promise<void> => {
         flowData.nodes[node.id] = node.toJSON()
     })
 
+    console.log(JSON.stringify(flowData))
+
     await engine.exit()
     await engine.process(flowData, 1)
 
-    // await engine.event('test')
+    await engine.event('test', {test:123})
 }
 
 run()

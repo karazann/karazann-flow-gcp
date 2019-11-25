@@ -67,7 +67,7 @@
         "verbose": false,
         "testEnvironment": "node",
         "setupFilesAfterEnv": [
-            "<rootDir>/src/jest.setup.ts"
+            "<rootDir>/src/setupTests.ts"
         ],
         "testPathIgnorePatterns": [
             "<rootDir>/src/shared"

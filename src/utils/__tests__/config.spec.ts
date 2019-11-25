@@ -23,9 +23,9 @@ jest.mock('@google-cloud/storage', () => {
 })
 
 describe('Config util', () => {
-    it('should setup envs in prod env correnctly if no error', async done => { 
+    it('should setup envs in prod env correnctly if no error', async done => {
         process.env.NODE_ENV = 'production'
-        
+
         // Mock download data
         const validDotenvData = `
             DB_USER='user'
@@ -35,7 +35,7 @@ describe('Config util', () => {
         mockedFile.download.mockResolvedValueOnce([buffer])
 
         const success = await loadEnv()
-        
+
         // Expecting to return true if everything is ok
         expect(success).toBe(true)
 
@@ -46,14 +46,14 @@ describe('Config util', () => {
         done()
     })
 
-    it('should return false if failed to setup env vars in prod', async done => { 
+    it('should return false if failed to setup env vars in prod', async done => {
         process.env.NODE_ENV = 'production'
-        
+
         // Mock download data
         mockedFile.download.mockRejectedValueOnce(new Error('Download error'))
 
         const success = await loadEnv()
-        
+
         // Expecting to return true if everything is ok
         expect(success).toBe(false)
 

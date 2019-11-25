@@ -6,7 +6,7 @@ import { isValidId } from './validator'
 import { NodeBuilder } from '../builder'
 import { Task } from '../task'
 
-type TriggerFunction = () => Promise<void>
+type TriggerFunction = (eventData: any) => Promise<void>
 
 export class Context {
     protected plugins: Map<string, unknown> = new Map()
@@ -17,9 +17,10 @@ export class Context {
         if (!isValidId(id)) throw new Error('ID should be valid to name@0.1.0 format')
     }
 
-    async event(triggerName: string) { 
-        const trigger = this.triggers.get(triggerName) as TriggerFunction 
-        await trigger()
+    async event(eventName: string, eventData: any) { 
+        const trigger = this.triggers.get(eventName)
+        if (trigger) await trigger(eventData)
+        else console.debug('No such trigger: ', eventName)
     }
 
     register(builder: NodeBuilder): void {
@@ -44,7 +45,7 @@ export class Context {
 
             // If eventName exist and not false register the trigger
             if (eventName) { 
-                this.triggers.set(eventName, async () => { await task.run({}) })
+                this.triggers.set(eventName, async (eventData: any) => { await task.run(eventData) })
             }
 
             init(task, node)
@@ -53,5 +54,6 @@ export class Context {
                 outputs[key] = { type: types[key], key, task }
             })
         }
+
     }
 }
