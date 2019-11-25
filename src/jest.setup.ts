@@ -20,7 +20,7 @@ beforeEach(() => {
     process.env.BUCKET_FLOWS = 'flows-test'
 
     // Silence winston
-    logger.silent = true
+    logger.transports.forEach(t => t.silent=true)
 })
 
 afterEach(() => {
