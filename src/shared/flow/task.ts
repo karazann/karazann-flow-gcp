@@ -49,8 +49,14 @@ export class Task {
 
             this.outputData = await this.worker(this, inputs, data)
 
-            const nexts = this.next.filter((f: any) => !this.closed.includes(f.key)).map(async (f: any) => await f.task.run(data, false, garbage))
-            if (propagate) await Promise.all(nexts)
+            if (propagate) {
+                // prettier-ignore
+                await Promise.all(
+                    this.next
+                        .filter((f: any) => !this.closed.includes(f.key))
+                        .map(async (f: any) => await f.task.run(data, false, garbage))
+                )
+            }
         }
 
         if (needReset) garbage.map(t => t.reset())
