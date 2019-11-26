@@ -25,7 +25,7 @@ export class WorkerService {
     constructor() {
         const bucketName = process.env.BUCKET_FLOWS as string
         this.flowsBucket = this.storage.bucket(bucketName)
-        
+
         // Register the node builders
         const builders = [new TimerNode(), new PrintNode()]
         builders.map(b => {
@@ -43,7 +43,7 @@ export class WorkerService {
         const res = await file.download()
         return JSON.parse(res[0].toString())
     }
-    
+
     /**
      * Download the flow data from the dedicated Cloud Storage bucket and then process it
      * @param flowId Id of the flow
@@ -52,7 +52,7 @@ export class WorkerService {
      */
     async processFlow(flowId: string, eventName: string, eventData: IEventData): Promise<boolean> {
         let flowData: IFlowData
-        
+
         // Download the file and handle errors
         try {
             flowData = await this.downloadFlow(flowId)

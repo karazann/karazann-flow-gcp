@@ -13,28 +13,28 @@ export interface IInputsData {
 }
 
 export interface IFlowControls {
-    [key: string]: () => void
+    [key: string]: () => void | Promise<void>
 }
 
 export class Node {
     private static latestId = 0
+
     private static incrementId(): number {
         if (!this.latestId) this.latestId = 1
         else this.latestId++
         return this.latestId
     }
 
-    processed: boolean = false
-
-    outputDatas: IOutputsData = {}
-
     // new datas
 
     builderName!: string
+    processed: boolean = false
 
     id!: number
     inputs = new Map<string, Input>()
     outputs = new Map<string, Output>()
+
+    outputDatas: IOutputsData = {}
 
     constructor() {
         this.id = Node.incrementId()

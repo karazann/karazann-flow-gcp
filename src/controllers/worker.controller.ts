@@ -9,7 +9,7 @@ import { IPubSubAck, IPubSubMessage } from '../interfaces/pubsub.interface'
 
 interface IJobAttributes {
     flowId: string
-    eventName: string,
+    eventName: string
     eventData: {
         [key: string]: string
     }
@@ -47,9 +47,9 @@ export class WorkerController {
         if (!attr.flowId) throw new BadRequestError('flowId missing in attributes!')
         if (!attr.eventName) throw new BadRequestError('eventName missing in attributes!')
         if (!attr.eventData) throw new BadRequestError('eventData missing in attributes!')
-        
+
         const success = await this.worker.processFlow(attr.flowId, attr.eventName, attr.eventData)
-        
+
         if (success === true) return { success: true }
         else return undefined
     }

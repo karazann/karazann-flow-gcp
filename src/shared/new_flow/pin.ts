@@ -2,7 +2,7 @@
  * Copyright (c) 2019 Roland Sz.Kovács.
  */
 
-export const enum PinType { 
+export const enum PinType {
     Flow,
     Data
 }
@@ -11,10 +11,12 @@ export class Pin {
     constructor(private name: string, public type: PinType, private compatible: Pin[] = [], private data = {}) {}
 
     combineWith(pin: Pin): void {
-        this.compatible.push(pin)
+        if (this.type === pin.type) {
+            this.compatible.push(pin)
+        } else throw new TypeError('The pins you want to combine has different types, which is not allowed!')
     }
 
-    isFlow() { 
+    isFlow() {
         return this.type === PinType.Flow
     }
 

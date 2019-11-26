@@ -70,11 +70,9 @@
             "<rootDir>/src/setupTests.ts"
         ],
         "testPathIgnorePatterns": [
-            "<rootDir>/src/shared"
         ],
         "coveragePathIgnorePatterns": [
-            "node_modules/",
-            "src/shared"
+            "node_modules/"
         ],
         "roots": [
             "<rootDir>/src"

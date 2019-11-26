@@ -31,7 +31,7 @@ const run = async (): Promise<void> => {
     const nodes = [timer, print]
 
     const flowData: IFlowData = { id, nodes: {} }
-    
+
     nodes.forEach(node => {
         flowData.nodes[node.id] = node.toJSON()
     })
@@ -41,7 +41,7 @@ const run = async (): Promise<void> => {
     await engine.exit()
     await engine.process(flowData, 1)
 
-    await engine.event('test', {test:123})
+    await engine.event('test', { test: 123 })
 }
 
 run()

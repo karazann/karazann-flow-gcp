@@ -42,7 +42,6 @@ describe('Worker microservice', () => {
     })
 
     describe('POST /work/', () => {
-        
         const validMessage: IPubSubBody = {
             message: {
                 messageId: 'id-test',
@@ -67,14 +66,10 @@ describe('Worker microservice', () => {
                         inputs: {},
                         outputs: {
                             act: {
-                                connections: [
-                                    { node: 2, input: 'act', data: {} }
-                                ]
+                                connections: [{ node: 2, input: 'act', data: {} }]
                             },
                             key: {
-                                connections: [
-                                    { node: 2, input: 'key', data: {} }
-                                ]
+                                connections: [{ node: 2, input: 'key', data: {} }]
                             }
                         },
                         position: [80, 200],
@@ -85,14 +80,10 @@ describe('Worker microservice', () => {
                         data: {},
                         inputs: {
                             act: {
-                                connections: [
-                                    { node: 1, output: 'act', data: {} }]
-                                
+                                connections: [{ node: 1, output: 'act', data: {} }]
                             },
                             key: {
-                                connections: [
-                                    { node: 1, output: 'key', data: {} }
-                                ]
+                                connections: [{ node: 1, output: 'key', data: {} }]
                             }
                         },
                         outputs: {},
@@ -141,7 +132,8 @@ describe('Worker microservice', () => {
             done()
         })
 
-        it.todo('should fail properly if the engine cant process the flow'/*, async done => {
+        it.todo(
+            'should fail properly if the engine cant process the flow' /*, async done => {
             const invalidFlowData: IFlowData = {
                 id: 'test@0.0.1',
                 nodes: {
@@ -168,6 +160,7 @@ describe('Worker microservice', () => {
             expect(response.status).toBe(409)
 
             done()
-        }*/)
+        }*/
+        )
     })
 })

@@ -1,26 +1,7 @@
 import { Node, IInputsData, IOutputsData, IFlowControls } from './node'
 import { Output, Input } from './io'
 import { Pin, PinType } from './pin'
-
-abstract class NodeBuilder {
-    constructor(public name: string) {}
-
-    runBuild(node: Node): Node {
-        this.build(node)
-        return node
-    }
-
-    createNode() {
-        const instance = new Node()
-        instance.builderName = this.name
-        // Build io
-        this.runBuild(instance)
-        return instance
-    }
-
-    abstract build(node: Node): void | Promise<void>
-    abstract worker(node: Node, inputs: IInputsData, outputs: IOutputsData, control: IFlowControls): void | Promise<void>
-}
+import { NodeBuilder } from './builder'
 
 const controlPin = new Pin('Control', PinType.Flow)
 const numberPin = new Pin('Number', PinType.Data)
@@ -34,7 +15,7 @@ class OnStart extends NodeBuilder {
         node.addOutput(new Output('control', controlPin))
     }
 
-    worker(node: Node, inputs: IInputsData, outputs: IOutputsData, control: IFlowControls) {
+    async worker(node: Node, inputs: IInputsData, outputs: IOutputsData, control: IFlowControls) {
         node.processed = true
         control['control']()
     }
@@ -53,10 +34,11 @@ class Random extends NodeBuilder {
         node.addOutput(new Output('number2', numberPin))
     }
 
-    worker(node: Node, inputs: IInputsData, outputs: IOutputsData, control: IFlowControls) {
+    async worker(node: Node, inputs: IInputsData, outputs: IOutputsData, control: IFlowControls) {
         node.processed = true
         outputs['number'].data = Math.floor(Math.random() * 100)
         outputs['number2'].data = 10
+
         control['control']()
     }
 }
@@ -74,7 +56,7 @@ class Print extends NodeBuilder {
         node.addOutput(new Output('control', controlPin))
     }
 
-    worker(node: Node, inputs: IInputsData, outputs: IOutputsData, control: IFlowControls) {
+    async worker(node: Node, inputs: IInputsData, outputs: IOutputsData, control: IFlowControls) {
         node.processed = true
         const input = inputs['number']
         console.debug(input)
@@ -119,14 +101,28 @@ class FlowEngine {
         return inputData
     }
 
-    startPorcessing(nodes: Map<number, Node>, nodeId: number) {
+    async startPorcessing(nodes: Map<number, Node>, nodeId: number) {
         this.nodes = nodes
-        this.processNode(nodeId)
+        await this.processNode(nodeId)
     }
 
-    processNode(nodeId: number) {
+    /*async processUnreachable(): Promise<void> {
+        const data = this.data as IFlowData
+
+        for (const i of Object.keys(data.nodes)) {
+            // process nodes that have not been reached
+            const node = data.nodes[i] as IEngineNode
+
+            if (typeof node.outputData === 'undefined') {
+                await this.processNode(node)
+                await this.forwardProcess(node)
+            }
+        }
+    }*/
+
+    async processNode(nodeId: number) {
         const node = this.nodes.get(nodeId) as Node
-        // evry node need to be processed once
+        // Every node need to be processed once
         if (node.processed === true) return
 
         console.debug(`[Node System]: processing node: ${node.builderName}`)
@@ -142,9 +138,9 @@ class FlowEngine {
                 if (o.hasConnection()) {
                     o.connections.forEach(c => {
                         const nextNodeId = c.input.node?.id as number
-                        flowControls[o.key] = () => {
+                        flowControls[o.key] = async () => {
                             console.debug(`[Node System] flowing to: ${nextNodeId}`)
-                            this.processNode(nextNodeId)
+                            await this.processNode(nextNodeId)
                         }
                     })
                 } else {
@@ -159,13 +155,13 @@ class FlowEngine {
             }
         })
 
-        // calculate the output of the node then flow
+        // Get the builder for the node
         const builder = this.builders.get(node.builderName)
         if (!builder) throw new Error('Builder not registered')
 
         console.debug(`[Node System] working on: ${node.builderName}`)
         // console.debug(inputData, n.outputData)
-        builder.worker(node, inputDatas, node.outputDatas, flowControls)
+        await builder.worker(node, inputDatas, node.outputDatas, flowControls)
     }
 }
 
@@ -212,5 +208,4 @@ nodes.set(2, random)
 nodes.set(3, print)
 
 engine.startPorcessing(nodes, 1)
-console.log(nodes)
-
+console.debug(123)

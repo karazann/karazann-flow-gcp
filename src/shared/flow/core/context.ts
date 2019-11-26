@@ -17,7 +17,7 @@ export class Context {
         if (!isValidId(id)) throw new Error('ID should be valid to name@0.1.0 format')
     }
 
-    async event(eventName: string, eventData: any) { 
+    async event(eventName: string, eventData: any) {
         const trigger = this.triggers.get(eventName)
         if (trigger) await trigger(eventData)
         else console.debug('No such trigger: ', eventName)
@@ -33,7 +33,7 @@ export class Context {
 
         const taskWorker = builder.worker
         // tslint:disable-next-line: no-empty
-        const init = builder.task.init || (() => { })
+        const init = builder.task.init || (() => {})
         const eventName = builder.task.eventName
         const types = builder.task.outputs
 
@@ -44,8 +44,10 @@ export class Context {
             })
 
             // If eventName exist and not false register the trigger
-            if (eventName) { 
-                this.triggers.set(eventName, async (eventData: any) => { await task.run(eventData) })
+            if (eventName) {
+                this.triggers.set(eventName, async (eventData: any) => {
+                    await task.run(eventData)
+                })
             }
 
             init(task, node)
@@ -54,6 +56,5 @@ export class Context {
                 outputs[key] = { type: types[key], key, task }
             })
         }
-
     }
 }
