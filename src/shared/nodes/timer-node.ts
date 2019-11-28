@@ -3,10 +3,9 @@
  */
 
 import { NodeBuilder, Node, Output } from '../flow'
-import { INodeData, IWorkerInputs } from '../flow/core/data'
 import { FlowPin, NumberPin } from './pins'
 
-export class TimerNode extends NodeBuilder {
+/*export class TimerNode extends NodeBuilder {
     constructor() {
         super('Timer')
         this.task = {
@@ -27,4 +26,4 @@ export class TimerNode extends NodeBuilder {
         console.log(data)
         return { key: 10 }
     }
-}
+}*/

@@ -1,8 +1,8 @@
 import { FlowPin, NumberPin } from './pins'
 import { NodeBuilder, Input, Node } from '../flow'
-import { INodeData, IWorkerInputs } from '../flow/core/data'
 
-export class PrintNode extends NodeBuilder {
+
+/*export class PrintNode extends NodeBuilder {
     constructor() {
         super('Print')
         this.task = {
@@ -18,4 +18,4 @@ export class PrintNode extends NodeBuilder {
     worker(node: INodeData, inputs: IWorkerInputs, data: any) {
         console.debug('Alert', node, data, inputs)
     }
-}
+}*/

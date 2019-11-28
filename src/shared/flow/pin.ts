@@ -2,7 +2,7 @@
  * Copyright (c) 2019 Roland Sz.Kovács.
  */
 
-export const enum PinType {
+export enum PinType {
     Flow,
     Data
 }

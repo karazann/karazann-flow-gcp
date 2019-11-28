@@ -3,10 +3,9 @@
  */
 
 import { Input, Output, FlowEngine } from '../flow'
-import { IFlowData } from '../flow/core/data'
 import { TimerNode, PrintNode } from './index'
 
-const run = async (): Promise<void> => {
+/*const run = async (): Promise<void> => {
     const id = 'test@1.0.0'
 
     const engine = new FlowEngine(id)
@@ -44,4 +43,4 @@ const run = async (): Promise<void> => {
     await engine.event('test', { test: 123 })
 }
 
-run()
+run()*/
