@@ -8,6 +8,7 @@
         "no-string-literal": [false],
         "max-classes-per-file": [true, 7],
         "member-access": [true, "no-public"],
-        "semicolon": [true, "never"]
-    }
+        "semicolon": [true, "never"],
+        "interface-name": [false]
+    } 
 }

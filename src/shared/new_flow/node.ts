@@ -1,4 +1,4 @@
-import { Input, Output } from './io'
+import { Input, Output, Connection } from './io'
 
 interface IOData {
     data: any
@@ -62,6 +62,15 @@ export class Node {
         output.node = null
 
         this.outputs.delete(output.key)
+    }
+
+    getConnections() {
+        const ios = [...this.inputs.values(), ...this.outputs.values()]
+        const connections = ios.reduce((arr, io) => {
+            return [...arr, ...io.connections]
+        }, [] as Connection[])
+
+        return connections
     }
 
     private _add<T extends any>(list: Map<string, T>, item: T, prop: string): void {

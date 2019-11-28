@@ -5,9 +5,6 @@
 import { Service } from 'typedi'
 import { Storage, Bucket } from '@google-cloud/storage'
 import { logger } from '../utils/logger'
-import { FlowEngine } from '../shared/flow'
-import { IFlowData } from '../shared/flow/core/data'
-import { TimerNode, PrintNode } from '../shared/nodes'
 
 interface IEventData {
     [key: string]: string
@@ -15,7 +12,7 @@ interface IEventData {
 
 @Service()
 export class WorkerService {
-    private readonly engine: FlowEngine = new FlowEngine('name@1.0.0')
+    // private readonly engine: FlowEngine = new FlowEngine('name@1.0.0')
     private readonly storage: Storage = new Storage()
     private readonly flowsBucket: Bucket
 
@@ -27,10 +24,10 @@ export class WorkerService {
         this.flowsBucket = this.storage.bucket(bucketName)
 
         // Register the node builders
-        const builders = [new TimerNode(), new PrintNode()]
-        builders.map(b => {
-            this.engine.register(b)
-        })
+        // const builders = [new TimerNode(), new PrintNode()]
+        // builders.map(b => {
+            // this.engine.register(b)
+        // })
     }
 
     /**
@@ -38,7 +35,7 @@ export class WorkerService {
      * @param flowId Id of the flow we want to download
      * @returns Returns the data of the flow including nodes, connections etc.
      */
-    async downloadFlow(flowId: string): Promise<IFlowData> {
+    async downloadFlow(flowId: string): Promise<any> {
         const file = this.flowsBucket.file(flowId)
         const res = await file.download()
         return JSON.parse(res[0].toString())
@@ -51,7 +48,7 @@ export class WorkerService {
      * @param eventData These datas separate triggers in the flow
      */
     async processFlow(flowId: string, eventName: string, eventData: IEventData): Promise<boolean> {
-        let flowData: IFlowData
+        let flowData: any
 
         // Download the file and handle errors
         try {
@@ -64,10 +61,10 @@ export class WorkerService {
 
         // Process the flow and handle error
         try {
-            console.debug(`Processing flow: ${flowId} form trigger: ${eventName}`)
+            // console.debug(`Processing flow: ${flowId} form trigger: ${eventName}`)
             // TODO finish flow engie to be used here
-            await this.engine.process(flowData, 1)
-            await this.engine.event(eventName, eventData)
+            // await this.engine.process(flowData, 1)
+            // await this.engine.event(eventName, eventData)
         } catch (e) {
             logger.error(e)
             logger.error(`Failed to process flow: ${flowId}`)

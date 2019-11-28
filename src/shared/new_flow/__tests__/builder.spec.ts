@@ -1,45 +1,7 @@
 import { Node } from '../node'
-import { NodeBuilder } from '../builder'
-import { IInputsData, IOutputsData, IFlowControls } from '../node'
 import { Output, Input } from '../io'
-import { Pin, PinType } from '../pin'
+import { NumberNode, PrintNode, pinNumber, pinFlow }  from './testBuilders'
 
-const pinNumber = new Pin('Number', PinType.Data)
-const pinFlow = new Pin('Number', PinType.Data)
-
-class NumberNode extends NodeBuilder {
-    constructor() {
-        super('NumberNode')
-    }
-
-    build(node: Node) {
-        // Data
-        node.addOutput(new Output('number', pinNumber))
-    }
-
-    worker(node: Node, input: IInputsData, output: IOutputsData, flow: IFlowControls) {
-        output['number'].data = 123
-    }
-}
-
-class PrintNode extends NodeBuilder {
-    constructor() {
-        super('PrintNode')
-    }
-
-    build(node: Node) {
-        // Flows
-        node.addInput(new Input('control', pinFlow))
-        node.addOutput(new Output('control', pinFlow))
-        // Data
-        node.addInput(new Input('text', pinNumber))
-    }
-
-    worker(node: Node, input: IInputsData, output: IOutputsData, flow: IFlowControls) {
-        const inputText = input['text'].data
-        console.debug(inputText)
-    }
-}
 
 describe('NodeBuilder class', () => {
     const numberBuilder = new NumberNode()
