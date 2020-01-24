@@ -4,8 +4,11 @@
 
 import { Node } from './node'
 import { Pin } from './pin'
+import { EditorConnection } from '.'
 
 export class Connection {
+    editorConnection!: EditorConnection
+
     constructor(public output: Output, public input: Input, public data: unknown = {}) {
         this.input.addConnection(this)
     }
@@ -21,7 +24,7 @@ export class IO {
     multipleConnections: boolean
     connections: Connection[] = []
 
-    constructor(public key: string, public pin: Pin, multiConns: boolean) {
+    constructor(public key: string, public name: string, public pin: Pin, multiConns: boolean) {
         this.node = null
         this.multipleConnections = multiConns
         this.connections = []
@@ -41,8 +44,8 @@ export class IO {
 }
 
 export class Input extends IO {
-    constructor(key: string, pin: Pin, multiConns: boolean = false) {
-        super(key, pin, multiConns)
+    constructor(key: string, name: string, pin: Pin, multiConns: boolean = false) {
+        super(key, name, pin, multiConns)
     }
 
     addConnection(connection: Connection): void {
@@ -66,8 +69,8 @@ export class Input extends IO {
 }
 
 export class Output extends IO {
-    constructor(key: string, pin: Pin, multiConns: boolean = true) {
-        super(key, pin, multiConns)
+    constructor(key: string, name: string, pin: Pin, multiConns: boolean = true) {
+        super(key, name, pin, multiConns)
     }
 
     connectTo(input: Input): Connection {

@@ -21,13 +21,13 @@ describe('Pin class', () => {
         expect(pinBoolean.compatibleWith(pinString)).toBe(false)
     })
 
-    it('should has a correct isFlow() method', () => { 
+    it('should has a correct isFlow() method', () => {
         const pinData = new Pin('Data', PinType.Data)
         const pinFlow = new Pin('Flow', PinType.Flow)
 
         expect(pinData.isFlow()).toBe(false)
         expect(pinFlow.isFlow()).toBe(true)
-    }) 
+    })
 
     it('should throw error when we want to combine two pin with different type', () => {
         const pinNumber = new Pin('Number', PinType.Data)

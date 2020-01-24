@@ -60,7 +60,10 @@
     "bit": {
         "env": {},
         "componentsDefaultDirectory": "src/shared/{name}",
-        "packageManager": "npm"
+        "packageManager": "npm",
+        "overrides": {
+            "szkabaroli.karazann-shared/flow": {}
+        }
     },
     "jest": {
         "bail": 1,

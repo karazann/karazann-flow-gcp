@@ -1,4 +1,4 @@
-import { Node, IInputsData, IFlowControls } from '../node'
+import { Node, InputsData, FlowControls } from '../node'
 import { Input } from '../io'
 import { PinType } from '../pin'
 import { Context } from '../core/context'
@@ -7,7 +7,7 @@ export class FlowEngine extends Context {
     nodes!: Map<number, Node>
 
     extractInputData(node: Node) {
-        const inputData: IInputsData = {}
+        const inputData: InputsData = {}
 
         for (const key of node.inputs.keys()) {
             const input = node.inputs.get(key) as Input
@@ -56,10 +56,10 @@ export class FlowEngine extends Context {
         console.debug(`[Node System]: processing node: ${node.builderName}`)
 
         // Construct input data form other node outputs
-        const inputDatas: IInputsData = this.extractInputData(node)
+        const inputDatas: InputsData = this.extractInputData(node)
 
         // Construct outputs
-        const flowControls: IFlowControls = {}
+        const flowControls: FlowControls = {}
         node.outputs.forEach(o => {
             if (o.pin.type === PinType.Flow) {
                 // Build flow controls

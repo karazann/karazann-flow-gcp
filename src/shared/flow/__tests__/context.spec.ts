@@ -4,9 +4,9 @@ import { NodeBuilder } from '../builder'
 
 describe('Context class', () => {
     let context: Context
-    let builder1: NodeBuilder 
+    let builder1: NodeBuilder
     let builder2: NodeBuilder
-    
+
     let mockEmit: jest.Mock
 
     beforeAll(() => {
@@ -16,7 +16,7 @@ describe('Context class', () => {
         mockEmit = jest.fn()
     })
 
-    beforeEach(() => { 
+    beforeEach(() => {
         mockEmit.mockClear()
     })
 
@@ -28,7 +28,7 @@ describe('Context class', () => {
 
         const expecting = new Map([
             [builder1.name, builder1],
-            [builder2.name, builder2],
+            [builder2.name, builder2]
         ])
 
         expect(context.builders).toMatchObject(expecting)

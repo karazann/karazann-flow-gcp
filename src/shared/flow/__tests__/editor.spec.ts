@@ -3,9 +3,7 @@
  */
 
 import { NumberNode, PrintNode } from './testBuilders'
-import { NodeBuilder } from '../builder'
-import { Node } from '../node'
-import { Editor } from '../editor/editor'
+import { Node, NodeBuilder, Output, Input, Editor } from '..'
 
 describe('Editor class', () => {
     let editor: Editor
@@ -19,10 +17,10 @@ describe('Editor class', () => {
 
     beforeEach(() => {
         const par = document.createElement('div') as HTMLElement
-        const container = document.createElement('div') as HTMLElement
-        par.appendChild(container)
+        const root = document.createElementNS('http://www.w3.org/2000/svg', 'svg') as SVGElement
+        par.appendChild(root)
 
-        editor = new Editor(container)
+        editor = new Editor(root)
 
         builders = [new NumberNode(), new PrintNode()]
         builders.forEach(b => editor.register(b))
@@ -68,8 +66,8 @@ describe('Editor class', () => {
         editor.on('connectioncreated', mockConnectionCreated)
         editor.on('connectionremoved', mockConnectionRemoved)
 
-        const output = nodes[0].outputs.get('number')
-        const input = nodes[1].inputs.get('text')
+        const output = nodes[0].outputs.get('number') as Output
+        const input = nodes[1].inputs.get('text') as Input
 
         // Create
         expect(() => editor.connect(output, input)).not.toThrow()
@@ -78,7 +76,7 @@ describe('Editor class', () => {
 
         expect(mockConnectionCreated).toBeCalledTimes(1)
         expect(mockConnectionCreated).toBeCalledWith(nodes[0].getConnections()[0])
-        
+
         // Remove
         expect(() => editor.removeConnection(nodes[0].getConnections()[0])).not.toThrow()
         expect(nodes[0].getConnections()).toHaveLength(0)

@@ -8,7 +8,7 @@ export enum PinType {
 }
 
 export class Pin {
-    constructor(private name: string, public type: PinType, private compatible: Pin[] = [], private data = {}) {}
+    constructor(public name: string, public type: PinType, private compatible: Pin[] = [], private data = {}) {}
 
     combineWith(pin: Pin): void {
         if (this.type === pin.type) {

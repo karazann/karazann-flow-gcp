@@ -4,16 +4,21 @@ interface IOData {
     data: any
 }
 
-export interface IOutputsData {
+export interface OutputsData {
     [key: string]: IOData
 }
 
-export interface IInputsData {
+export interface InputsData {
     [key: string]: IOData
 }
 
-export interface IFlowControls {
+export interface FlowControls {
     [key: string]: () => void | Promise<void>
+}
+
+export interface NodeMetadata {
+    position?: [number, number]
+    [key: string]: unknown
 }
 
 export class Node {
@@ -25,16 +30,15 @@ export class Node {
         return this.latestId
     }
 
-    // new datas
-
+    id!: number
     builderName!: string
     processed: boolean = false
+    metadata: NodeMetadata = {}
 
-    id!: number
     inputs = new Map<string, Input>()
     outputs = new Map<string, Output>()
 
-    outputDatas: IOutputsData = {}
+    outputDatas: OutputsData = {}
 
     constructor() {
         this.id = Node.incrementId()
@@ -72,6 +76,23 @@ export class Node {
 
         return connections
     }
+
+    /*toJSON(): NodeData {
+        const transformIO = <T extends any>(list: Map<string, Input | Output>) => {
+            return Array.from(list).reduce<T>((obj, [key, io]) => {
+                obj[key] = io.toJSON()
+                return obj
+            }, {} as any)
+        }
+
+        return {
+            id: this.id,
+            name: this.builderName,
+            metadata: this.metadata,
+            inputs: transformIO<InputsData>(this.inputs),
+            outputs: transformIO<OutputsData>(this.outputs)
+        }
+    }*/
 
     private _add<T extends any>(list: Map<string, T>, item: T, prop: string): void {
         if (list.has(item.key)) throw new Error(`Item with key '${item.key}' already been added to the node`)
